@@ -1,5 +1,16 @@
 # Release notes
 
+## 0.1.14 - build-menu category fix
+
+Addresses [issue #1](https://github.com/TrapperCounty/TrapperFreightElevators/issues/1): unlocked freight recipes appeared in search but were missing when browsing build categories.
+
+- Registers Freight Elevators with the native build-menu category type.
+- Groups all 13 recipes under Item Freight, Fluid Freight and Shafts.
+- Preserves existing recipe/buildable paths and milestone unlocks.
+- Adds an editor regression test that fails on the original assets and passes after the fix.
+
+All five editor suites pass. Windows client, Windows Server and Linux Server packages built successfully. See the current [validation record](docs/VALIDATION.md) for runtime coverage and remaining checks.
+
 ## 0.1.13 — initial public beta candidate
 
 Freight elevators for multi-floor factories, with item and fluid transport, extendable shafts and configurable stops.

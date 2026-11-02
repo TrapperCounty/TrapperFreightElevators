@@ -1,171 +1,171 @@
 {
   "mod": "TrapperFreightElevators",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "matches_release_source_archive": true,
   "files": [
     {
       "path": "Content/Art/Icon_Category.uasset",
-      "sha256": "bbdf1b048f00a922a9ab98af31402bf9a5d9bb4bc885c8a8c30587a8bcedb6f0"
+      "sha256": "0c96c2d500f454c9721171a8eb0c63ce580e077e4db36bf022214ae39914a1b1"
     },
     {
       "path": "Content/Art/Icon_FluidDrive_Mk1.uasset",
-      "sha256": "1d759ae7359e69fc096ff7ea4ed2e0344727c4300079b95d54e54dae00e31605"
+      "sha256": "2a7635a19e5a7bdb23f9c38df1e7bf268ff45a68cbb2917aa8c5d942b72f1c58"
     },
     {
       "path": "Content/Art/Icon_FluidDrive_Mk2.uasset",
-      "sha256": "9fcb584979f67231f6d2fb0780b461345383ef40ca313050ba08f6bbf9ab0fc5"
+      "sha256": "f0f3cdb6bad49044c84b63c1179f679e92ffd8060d0cf5faf485d5bea8e7089b"
     },
     {
       "path": "Content/Art/Icon_FluidDrive_Mk3.uasset",
-      "sha256": "9d8e1b26e03793c81af20bc0e9d1f952aa04e2b92822d7b68bf49285670b7287"
+      "sha256": "4b1c2d9775b4d4b33b4f9b9af9ffd9de64f3da23cb9bcf23dac8f9cba0ec774e"
     },
     {
       "path": "Content/Art/Icon_FluidStop_Mk1.uasset",
-      "sha256": "9af1d8dfb644fd0cf1b957c265af39b0089697ded1bb86575ab88ac05c202734"
+      "sha256": "e9b31ab3a76799de8faf1180b492d135f61c8ee62b33e4052a75b957b64b6516"
     },
     {
       "path": "Content/Art/Icon_FluidStop_Mk2.uasset",
-      "sha256": "54c58ed76ae9424f5cb689d8aa49058212ef977f91132ab3c4f5a940e2b0a67e"
+      "sha256": "6edbcd30eda46f439ff0259ed75e7b35dcdfeb675c4d10c6dcbb7262dd73052e"
     },
     {
       "path": "Content/Art/Icon_FluidStop_Mk3.uasset",
-      "sha256": "ccfa016a78891d72a490cf128d1443d8c1f201c078a8713d8fff5787224f0e55"
+      "sha256": "a57e83d285106aeeed07ec70f46371090afe6d5308df7f6aba824ee9bf561ee8"
     },
     {
       "path": "Content/Art/Icon_ItemDrive_Mk1.uasset",
-      "sha256": "a9377fc3c27e579f34c0893732cec3f6d0dfdc3ac7708f1585f94595e02d9f6e"
+      "sha256": "036e81eb1796ee6875642a16980c7fe3f3c7d2aec850057b511d5e50f1778570"
     },
     {
       "path": "Content/Art/Icon_ItemDrive_Mk2.uasset",
-      "sha256": "485ce363bde67afef495de0508fb47115e4774ad7e52defbe14c1aa2ef61ba94"
+      "sha256": "08797a581649948919b6f2d520eba5efdb33d5a6a9daf269774196afd422ffd9"
     },
     {
       "path": "Content/Art/Icon_ItemDrive_Mk3.uasset",
-      "sha256": "5aeb5b02353f227376e4bea36788f44c68b789a18b8bd6e16f507bc717df76ad"
+      "sha256": "3163d903e798c38bca6bb34803b646123487416deb1ed5ee50e822703b68a1de"
     },
     {
       "path": "Content/Art/Icon_ItemStop_Mk1.uasset",
-      "sha256": "f163ec1372c82b60e2ace1886f37efc7078d6e6fa4f0d79b18e0df61e37ec416"
+      "sha256": "f1ae2928be769bbbec30ba60907983236abf080cc8725e9a30fa0ec9182a47ea"
     },
     {
       "path": "Content/Art/Icon_ItemStop_Mk2.uasset",
-      "sha256": "fffe6d483c5d41d5f779b4b13512c3c45ac29536d622878e60c465fc53795c11"
+      "sha256": "45f2245f9362b8d0d98368988345234bfe9c2fe7dd89cbe495a53cee7d9dfcbd"
     },
     {
       "path": "Content/Art/Icon_ItemStop_Mk3.uasset",
-      "sha256": "8e5dc4e580225da56c83777ae97cf00897045c2472bf40737ee4ad8841909a48"
+      "sha256": "86606077cf043043c0de9180f4c3809545a1ef614a50067c3ec10f714f5aec46"
     },
     {
       "path": "Content/Art/Icon_Shaft.uasset",
-      "sha256": "ea3f0c5b759d606c45ab6e09629f35c71cec2b2ac30b6d82cdd9db6ad13a0350"
+      "sha256": "f9d3681284e4cd064c88aaf87a22d0553547d9db398de5224a8906fb184ac1d4"
     },
     {
       "path": "Content/Art/Ironworks/M_IW_Amber.uasset",
-      "sha256": "53565da1631ed1f8da7c243ec484c58b1127459e0bec4bb5f4466893949b098f"
+      "sha256": "cde093bc2f71a024a02ffb4399b2d2c90c12767546864855007dd257958406fc"
     },
     {
       "path": "Content/Art/Ironworks/M_IW_Cable.uasset",
-      "sha256": "fa8e759af28456fd4c97baec75c9a3d908772a6b88cfdac9f476884f148cf8ff"
+      "sha256": "9ff2a40614c63ba2b32e7b314bf1a14911b01b2ee0b438764628523b7cf4c13b"
     },
     {
       "path": "Content/Art/Ironworks/M_IW_Dark.uasset",
-      "sha256": "bdf9c60153ef5b8c867143188dac07ab63524b2279d141c6e200c60b140671dd"
+      "sha256": "1c7ad6936825f539827394e41712c76d2d1e6cc13c4022a346bfa999630ee1d1"
     },
     {
       "path": "Content/Art/Ironworks/M_IW_Hazard.uasset",
-      "sha256": "75eaf65fe911d12d2d74617cf39610373d6ca131584688324b29afe04dd1d71c"
+      "sha256": "32072726cd3e5a6099b7220fb95f947981af8548b971622a16ee9f719ee5f020"
     },
     {
       "path": "Content/Art/Ironworks/M_IW_Label.uasset",
-      "sha256": "86ad2e73ea1b2f11fa47c0ebc165eab963b0378e99b97d6197d48eb4a6d5ea6d"
+      "sha256": "37cd94d266c92cf33862666707e308d6b8b3b53c0f7f69d1dff63d4776b667d4"
     },
     {
       "path": "Content/Art/Ironworks/M_IW_Mesh.uasset",
-      "sha256": "ef0b89c9a40d57521482ba95abdd473022cc5dbc51634c80a9fbb8081d6c6e57"
+      "sha256": "a8500ebab2aa83c8528882572ee364ec4ec8ece120fd363300b2108b1dd4f6a1"
     },
     {
       "path": "Content/Art/Ironworks/M_IW_Paint.uasset",
-      "sha256": "60ecd4d0f8232342683a0d7afaaa56174b65e2d7fbb4dd9669451e4242eef288"
+      "sha256": "7acd91fb9f1f623e14dd3433dd093961f247b661c83996adf99360fbc359ce5b"
     },
     {
       "path": "Content/Art/Ironworks/M_IW_Steel.uasset",
-      "sha256": "ed1b6be20ce7a37a8632fed587476db5466a72fc955c57e308a64b4f8291904f"
+      "sha256": "a77a09bb690d785f63266e77d3c5c893f77d8724305e11349583b4c96e32f267"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Base.uasset",
-      "sha256": "2d9b0c8fa984b4d45dcc616b54be4b27d61f5a70721ef009acd0637e22ec91e6"
+      "sha256": "9252227c745a4b866335e7752f90dc541c969dd1d720770bad0882b0e01b4ac5"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Buffer.uasset",
-      "sha256": "745ce8e2e69d24dc12df1c27efc19125fa7225056c277048ee384fe29a8af391"
+      "sha256": "f4bfe4121634e7b99251a90200fa283ec2f9fc0391a2f68855df88a1d7ccecab"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Cabin.uasset",
-      "sha256": "3794b261c30ed7bf13f7bdbd8eb8e7aa1d42c586738bc794bf0077b75d4f3268"
+      "sha256": "83bdf83381cfc7ec65abc0667fdd269951a3f28cda9d08355a3e4cbe6fc35f8a"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Cables.uasset",
-      "sha256": "199188f9d3c68637334eebf96c65e04dc565e58a2a3df6166378aca59f930b3d"
+      "sha256": "fdf1f728e09afb88cfb0d15fad4946e717e22e77863dc9098a5eb71d9273cd85"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Cargo.uasset",
-      "sha256": "d6220f61c5bddeee30493df4a2a5191d7db5174670499de46bf17d2839405b42"
+      "sha256": "6ce58e346aab202a0cd3a8715a2280fd81f7591305f4ef795d9cef502be344cd"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Drum.uasset",
-      "sha256": "fb5c09397acfc66b5eb90e4e215fd5a5e4fdc08274c2e6b88bbaea7d5a5d4836"
+      "sha256": "ba3ffaffc8856f6a7a568a6706bdb124a4ea7cfc82db711208b910f6e02869e7"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Flanges.uasset",
-      "sha256": "d7901ffd99987316628bcf5d79b283594baafca43ef2cb9e81b1e561dc3927da"
+      "sha256": "ac26f1e47222451b3a04a29b8e716c738298a7ba25bfd167483835c70053e2b5"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_FluidBuffer.uasset",
-      "sha256": "2cb042db3fad88fe2788424cbf07b0a41be1bdf037140aeefcda75297a021c27"
+      "sha256": "8b22fc9c1f8e579e6fc1452d2411487a834d4aee57a5a7fd235b68830b6ea320"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Gate.uasset",
-      "sha256": "6d430c91dfa2edd9fbaea64ab64fb9b1697b11c1b46dc839a70f993f83f29fac"
+      "sha256": "88b9f601ca1194530b1af1190479e2eff02d14e4b44a4ee247025270a48183f9"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Head.uasset",
-      "sha256": "c14f3eac5dfa98c778b126aad270e5a60967f3fb75f987a43d7f935b8e8a010e"
+      "sha256": "e34b7312b108730414c8b2d89669995975e289eff89938b6818e38a4b7173e8d"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Level.uasset",
-      "sha256": "f16be3dedbd86eca38c0b950c2698352d09bd530de998b7f4c8a4f94217f1434"
+      "sha256": "f0e2eae7c9926fa8301426b4a540c0f7582eafa3077bf783a5e2e5e11c745903"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_PortSigns.uasset",
-      "sha256": "8191fa266275780195c47ddd7ee9affec5789691f4e66b5c527855218a7f2c2e"
+      "sha256": "2aa366c4fb3b61e84cc5746f7ec2eb659cb017926173f7d519183d0d978d9465"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Screen.uasset",
-      "sha256": "1780e6ce33bb41bbc3212d6f20c7567e6087bb2696e2a691be6dd5d1e0e7ecef"
+      "sha256": "5a85b54c1a32c482f87da6598f1323d98d998700198aa89e72e1cb932745c7de"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Shaft.uasset",
-      "sha256": "3ce9a2388ca365ec8f3291e8eadbefc1c6924d2ea6a4af066b76467e6243296a"
+      "sha256": "033bb8a7cb2d175be441b0f3c37d0c0b46d38a19bda65430e0d58d2f1fe83df0"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Stop.uasset",
-      "sha256": "c9417233783dd31d86896a05c3c51d71ca2a3ea6493504cd37e6e935c8021bac"
+      "sha256": "b1a05bd49d9508ba99563c3fdff8f9d72ae36e2fd3d7d65ea7fa8783adeb4f30"
     },
     {
       "path": "Content/Art/Ironworks/SM_IW_Tank.uasset",
-      "sha256": "7f52816e743f4409c9fd678ef7c65ed19ada9a14abc5e20d5c2d9c0eade60d4d"
+      "sha256": "86aa15bf7422b62601eb870cdfa5e702ddb627c53ef38e0372f4b08e146708a0"
     },
     {
       "path": "Content/Art/Ironworks/T_IW_Brushed.uasset",
-      "sha256": "d6fa1ecb448b737d0bd1bfe3ce9c8b1ed432ae82fa603dee664e6dfdf614669d"
+      "sha256": "41f8f06bf39e777b42d9b17a6c61b9d387ce9ea6d92af74d6ab4c01ecfd454b2"
     },
     {
       "path": "Content/Art/Ironworks/T_IW_ExpandedMesh.uasset",
-      "sha256": "fe25fcd81204f71759b00e1547156bce34dee372225fcd4d88ffd9c96fe4e9bf"
+      "sha256": "c5ae9444589dfe3f52358fb494b4e544cbaae987ea933b2f21e5f2e46624547d"
     },
     {
       "path": "Content/Art/Ironworks/T_IW_Hazard.uasset",
-      "sha256": "f7818def95a80dc6f5295711bb37675a1d25b6644f98fa08b5f5eb2962209525"
+      "sha256": "072380c3973449df8b823ac454dd24995e3794f5a3c58b977436aa821ae73915"
     },
     {
       "path": "Content/Art/M_Dark.uasset",
@@ -185,163 +185,175 @@
     },
     {
       "path": "Content/Buildables/Build_FluidDrive_Mk1.uasset",
-      "sha256": "599a866f43d13d2456fda26c007997899b426f3df4a870598993668d84b0c0ca"
+      "sha256": "966885707c3ac7f68a19de4b9b083f15ca4b5c21c22f64d01321231f61ed9589"
     },
     {
       "path": "Content/Buildables/Build_FluidDrive_Mk2.uasset",
-      "sha256": "abcc38896e5189e5a9a69f6ca2d0604fb67794c6e179a298d4c0ba26cbb7266d"
+      "sha256": "a51cbf184a3eec6f58f82900cc556e2c8d664252d3fa1844a3c2aadc8fa6541c"
     },
     {
       "path": "Content/Buildables/Build_FluidDrive_Mk3.uasset",
-      "sha256": "18a09817765da1f4a5d60c4aa9e10c327a17022644b68ec860c089c2632a7153"
+      "sha256": "33dde0174b6609b47e3827711451dc9f46c574ba75c5d726573d118eb500cf30"
     },
     {
       "path": "Content/Buildables/Build_FluidStop_Mk1.uasset",
-      "sha256": "2bfa353b05abfba9053f10c4e7948c3adcf699f29a54462b21ab1cd78f3031a4"
+      "sha256": "f0ba7f4bffa717d83f4565f93dd580b2cb83092b96d2d8f526c3870e666f3e7a"
     },
     {
       "path": "Content/Buildables/Build_FluidStop_Mk2.uasset",
-      "sha256": "5acfa04858c29d0b7ec243d5a85369a399f9b991be2f8c0a5a455309bb50cdbe"
+      "sha256": "974622337c0702325ff66312d0988124f1e4b57270dd0f77dea2ab4776ce3556"
     },
     {
       "path": "Content/Buildables/Build_FluidStop_Mk3.uasset",
-      "sha256": "e7d4f0af9953dcfb648b0fbed3a1af442309ee0039955d184006a9d4da27ad35"
+      "sha256": "3868acab7ddc735c9e9130f3550a3e87d10d247bcd71c770a671a1281424be3e"
     },
     {
       "path": "Content/Buildables/Build_ItemDrive_Mk1.uasset",
-      "sha256": "d22720b92691f44dc2615c91bbc3006adafae99886a0a4ad5695e40797a1d399"
+      "sha256": "e8064eebb83bd7c4cf2240e6b677d5b58f7014f303c9147ff41909d9cb9f48bf"
     },
     {
       "path": "Content/Buildables/Build_ItemDrive_Mk2.uasset",
-      "sha256": "300fd17a4652fd6f1dd4df7e5a361bde1ff7cc08c1a05e85bb62cd7a74d10b1d"
+      "sha256": "e0e42181c48d8934cda3aa537b32032a4f04f74ffd937bfb6befb4035f59bd39"
     },
     {
       "path": "Content/Buildables/Build_ItemDrive_Mk3.uasset",
-      "sha256": "8f96791d447319b71da5de5b72f275d9df66d1bf08123cd6054be33927ce55d0"
+      "sha256": "44cac0869aca733e70b7d29e6a76125b089da01b6072d108c8278412a9fb50f3"
     },
     {
       "path": "Content/Buildables/Build_ItemStop_Mk1.uasset",
-      "sha256": "d32effc039f664b9d3841e8073a11f6a0de491d004a0b256f90cc054749fe208"
+      "sha256": "f6426b1ea16f50ac5594545f5d118cebe5dcc4f3990a975906df2e65f469b7d5"
     },
     {
       "path": "Content/Buildables/Build_ItemStop_Mk2.uasset",
-      "sha256": "027fdbdf0ac86c33031c1f364111f61254a86e71f2298906e33375aaaa957e18"
+      "sha256": "55de8ca870ab74bc8f3bdd41838b3793e628bf7fd4d097bba49767397c253405"
     },
     {
       "path": "Content/Buildables/Build_ItemStop_Mk3.uasset",
-      "sha256": "fc55c5d7ecbff7dee8708340b5eb82389f7d4026fdca91bd21767bb9af9b15b5"
+      "sha256": "412cae3c7714bd7d2789d4eb5bf98dc73e7ac5c64a7b88e094d4a640ad651238"
     },
     {
       "path": "Content/Buildables/Build_Shaft.uasset",
-      "sha256": "fc63f9cace406ba40da3b21934d2595d4d3a6044b6ae95f90f61d47dac09f2fd"
+      "sha256": "9ef96a2e59caddca167c56ee432abc29ace02c9d9b0eef5463ee88d1255ea514"
     },
     {
       "path": "Content/Categories/Cat_Freight.uasset",
-      "sha256": "8742d723fd79037101f48aaa535c9553fc49e0ff6b59adb93ff7c49522b10d35"
+      "sha256": "7ad34f9c2fcd0475f011cc9422612059319777e518b303f41389a0490e2dd275"
+    },
+    {
+      "path": "Content/Categories/SC_FreightFluids.uasset",
+      "sha256": "3c144d03d9c29792fabb74f77b37ce92a71ad741fb6ed0c14608ae7202b0656d"
+    },
+    {
+      "path": "Content/Categories/SC_FreightItems.uasset",
+      "sha256": "efa1cc572fbec72d7bd32f7a61d770e7466c186b1dbc12b01dd0424c63bd6022"
+    },
+    {
+      "path": "Content/Categories/SC_FreightShafts.uasset",
+      "sha256": "a38522ab9fe179d5bd29d3289252697c6daa765160c9244800abfe176da9cad7"
     },
     {
       "path": "Content/Descriptors/Desc_FluidDrive_Mk1.uasset",
-      "sha256": "56499636a5f176ff95c69b22a580ef57570110d3730b7c6aad5c8e8b44d908ce"
+      "sha256": "c1790ead84094bc89865c2192c8ad8afac00abfc435d6ecd848fcfa19a1b6fb0"
     },
     {
       "path": "Content/Descriptors/Desc_FluidDrive_Mk2.uasset",
-      "sha256": "52ccd111da5c548781eecdf588d4ce034a643bf461ef43f203185bdcb7d10563"
+      "sha256": "3f526212f2428e57feeb8b8fdf7fc65084f74458a2d23045a09ca5f1c2e44360"
     },
     {
       "path": "Content/Descriptors/Desc_FluidDrive_Mk3.uasset",
-      "sha256": "020daea1b2986a5e83883ad4d3bd43c8675e98b48a5f370812b0f03cd9995298"
+      "sha256": "d0fb0813eea777da9f63d2c9a6ff6c621e00f888fec2d5caf3d9858c53741756"
     },
     {
       "path": "Content/Descriptors/Desc_FluidStop_Mk1.uasset",
-      "sha256": "684a5b0c39c4e979de873c072082d0c3ff24ecd9a9fbe9d71e8e547766749e0a"
+      "sha256": "cc9323f76cb948bd4fffc8eee58a9d79f2f67b0f2bff8873a3d882e8b09a6872"
     },
     {
       "path": "Content/Descriptors/Desc_FluidStop_Mk2.uasset",
-      "sha256": "9ce11a7d280be292b874195b187d64b792063df3d689ffaa3375479d48a1ec4f"
+      "sha256": "1501115dd79779c519e9f50d6427645280e3e9071fe308b04c33d94ebd6c60d8"
     },
     {
       "path": "Content/Descriptors/Desc_FluidStop_Mk3.uasset",
-      "sha256": "d20dae324f586d880ef5b0a5e33b7a1311e96591abccca0b3a24a55f696f39d9"
+      "sha256": "e5e40415e361a18caa93d4da95fadcb19d9851483c02bcf358a39d2e1e1946b9"
     },
     {
       "path": "Content/Descriptors/Desc_ItemDrive_Mk1.uasset",
-      "sha256": "27f7645fd3ee767c1730a67b71eb6a20dedd1ae6aa66e16ae17fa28f86fed6a8"
+      "sha256": "8b62bfb5a6b8ebaf7fad1cb72ed1190afb77b2a47ab36ede99bcd69a4058eb0d"
     },
     {
       "path": "Content/Descriptors/Desc_ItemDrive_Mk2.uasset",
-      "sha256": "8e3fcdd7450f4ab6c7ee01cc3c97516750a6b1e22e6751dbf1bfe923f6b7740b"
+      "sha256": "fbe5da1121d568d4f18bacd96496fb892110cf8f9d55e1b2f977e231c1fd3c0c"
     },
     {
       "path": "Content/Descriptors/Desc_ItemDrive_Mk3.uasset",
-      "sha256": "3841b020b29eeeba828effe15cd8395e88c7e26b64f36bf4df0557a256aab9fd"
+      "sha256": "2fd40c6c248a7245c97dcc154523016ce4c27ce4d202195b9f61cb9d34b41a8c"
     },
     {
       "path": "Content/Descriptors/Desc_ItemStop_Mk1.uasset",
-      "sha256": "3fba7dcdbc5c5590ddd779b0aecb649991cf1b09560456d880d30215884a9e31"
+      "sha256": "70cc5c4cac9aaf8848fcaf47d5aa8de13a5ba5d3e5cf38693f2d706996e2ff99"
     },
     {
       "path": "Content/Descriptors/Desc_ItemStop_Mk2.uasset",
-      "sha256": "b584637ffef11eacfb169073ccdd26f91107076ed4b280ba19733b098f2bcfc9"
+      "sha256": "bed1214c0b54b9d7bd84ce6003fe2de5d40d451c5223be0fd5a8d138420d8f3f"
     },
     {
       "path": "Content/Descriptors/Desc_ItemStop_Mk3.uasset",
-      "sha256": "937548185a13842f510b32e748a646d5d3e1df423566fc2ad8b1c7e901c4eea4"
+      "sha256": "3a8faee605ad35a34551e3ed872ff14bf1589dfbe08968081dcd740fb2f59c8d"
     },
     {
       "path": "Content/Descriptors/Desc_Shaft.uasset",
-      "sha256": "710b25bd9069790c406ae3db36bcd880b499e97e5c550c77553f30383c1c02ed"
+      "sha256": "8fe277082416f88901424cfc7e2e23575899eb435d04c5778ce9a423cbba1b95"
     },
     {
       "path": "Content/Recipes/Recipe_FluidDrive_Mk1.uasset",
-      "sha256": "6d7f289f65ad0f01a29e125666341d1852652bbd0db1f1a1e46db62eb2ecdfa8"
+      "sha256": "aff47c5123cea52d1568e79e58cd2d259bfcb95610564a9f9ef341ac6e3f35bb"
     },
     {
       "path": "Content/Recipes/Recipe_FluidDrive_Mk2.uasset",
-      "sha256": "eddd195813172f1ab919f3ae4f349e3e50330bb0ca28b8d99d2a5692bf73b72f"
+      "sha256": "bb8339f89aa192cc4dc7edb5b6d7ef3702548008d3992bc82bd1117d53ee339c"
     },
     {
       "path": "Content/Recipes/Recipe_FluidDrive_Mk3.uasset",
-      "sha256": "5f4593ab6f163da53ef3c0726815a9df33de2def2e56f956a2c73431e8f7fca8"
+      "sha256": "a6faa9abd121e36b0060092836147375cdff4fbab004568404a90fead678256d"
     },
     {
       "path": "Content/Recipes/Recipe_FluidStop_Mk1.uasset",
-      "sha256": "2f73901c83f986b992bce7a87b2d7c9d923d04d792c84339f36f1a27fa591d6f"
+      "sha256": "1b69297d100dd1ad1f86fa3adb319b1a4bf6127b5424479d374fa964092d1ccc"
     },
     {
       "path": "Content/Recipes/Recipe_FluidStop_Mk2.uasset",
-      "sha256": "e195ebdce047661d620202db38cc55544129e756beded9fc9997cddaa342c4a6"
+      "sha256": "9948212e1b146f2f72575b31518adee1b1b28a0365793ef340256546ad84b624"
     },
     {
       "path": "Content/Recipes/Recipe_FluidStop_Mk3.uasset",
-      "sha256": "b4221ab123842b887579f217950e1dab5a07387ef4c5a079bd15819194c54268"
+      "sha256": "334c9dddddb702c1cf97c24931aaebcd20a1d174ec13789448b7b378558da2fc"
     },
     {
       "path": "Content/Recipes/Recipe_ItemDrive_Mk1.uasset",
-      "sha256": "70356c1bd28458b7cbc3c0546a6f66d7908bce915b09eb533d2c322d5b1c1721"
+      "sha256": "414bb6fecb5c1dfab2c97c70b5a48f202006eabacea31665ba995496eca3d58b"
     },
     {
       "path": "Content/Recipes/Recipe_ItemDrive_Mk2.uasset",
-      "sha256": "42f8e2f9505f0527b0aece3a948d303d2afcc68fa4bbde524eaac21aa63c165f"
+      "sha256": "1969ca57322e76117c8bd1a407b8aea2ada0e316f3d66d4e60aa4e95d709952f"
     },
     {
       "path": "Content/Recipes/Recipe_ItemDrive_Mk3.uasset",
-      "sha256": "6d6ac3bf0b227bbdc9d5fc6012e31849756144a057d840f22ba88923e5bd716f"
+      "sha256": "0c9aff231bed655ae5b5640991db699371696a8e3147dadffb1abc578a0bce77"
     },
     {
       "path": "Content/Recipes/Recipe_ItemStop_Mk1.uasset",
-      "sha256": "9812341f3d45026780ac47346898acfc9ace1feeede06290c7a26323573d8eb0"
+      "sha256": "700478b02f8a9b3a447bfcebcc91ffe37eab02d67f59c5e10a0c8ce95dd7bf82"
     },
     {
       "path": "Content/Recipes/Recipe_ItemStop_Mk2.uasset",
-      "sha256": "9ee2037302cf10eccd80087ee3cbf29383f98a01bee811ca25bbe5869e870aff"
+      "sha256": "c643e2bf3b81fa9c5b2edd6ec8faf68e9a794881c8f62ba5634c08e665970148"
     },
     {
       "path": "Content/Recipes/Recipe_ItemStop_Mk3.uasset",
-      "sha256": "551687c8acbf75ae02d27e006b3258342cb13acd7086c55da2c9b35d92c23fa7"
+      "sha256": "7bd5e7595b4bd93007ba8ff155cbb3883f24f5e15d927cc2d952eb8fa9695c75"
     },
     {
       "path": "Content/Recipes/Recipe_Shaft.uasset",
-      "sha256": "520542d1dec3d2235b3938952eacda2620ac695189845cbea304f0e433d9e905"
+      "sha256": "5aab86d96a8e506f82d9f73fff3ab08562056a9358917b3f44b32428aae66743"
     },
     {
       "path": "Content/RootGameWorld_TrapperFreightElevators.uasset",
@@ -353,19 +365,23 @@
     },
     {
       "path": "Content/Schematics/Schematic_FreightMk1.uasset",
-      "sha256": "b79d28eebab2b9c30a7c8c019dcf07e13ade7e6e686239d433dd73777e50a275"
+      "sha256": "152303cd3851aa4b958dcc1d583f9df02ce94bfa14f9ea08af78f1a6985f57e6"
     },
     {
       "path": "Content/Schematics/Schematic_FreightMk2.uasset",
-      "sha256": "42dee6ae8e8762c259ed19bbd79939ac8cea8503eedfc7e7ca85ce586b51bfc6"
+      "sha256": "4f2d85218074ae58e5f2d2b43027dcbf92be0e453e8a3a7f1d5af2505287ff18"
     },
     {
       "path": "Content/Schematics/Schematic_FreightMk3.uasset",
-      "sha256": "b516024f7aab899c62a0d9c126aae4aedad24155dc4576986aa9d0549fd049d9"
+      "sha256": "9443fe00c7e8c137d7ef1742ad38c13a787f1f6cf3e4b7831afa744d6fcfdb3c"
     },
     {
       "path": "Source/TrapperFreightElevators/Private/TFBuildables.cpp",
       "sha256": "5f049b8f9f232b6e2f3f339d931150df2a97ce47a36ac190f3c6b1fa2c6b4591"
+    },
+    {
+      "path": "Source/TrapperFreightElevators/Private/TFBuildMenuTests.cpp",
+      "sha256": "d72aee9d3af779460c89746c44d2dfdb64d1317faf59cd03cd0926098a55320d"
     },
     {
       "path": "Source/TrapperFreightElevators/Private/TFClientQA.cpp",
@@ -433,7 +449,7 @@
     },
     {
       "path": "Source/TrapperFreightElevatorsEditor/Private/TFGenerateAssetsCommandlet.cpp",
-      "sha256": "cf4cc4ed80f474e020979af120aa2d231ffb2e202305ffc42e798f7fbd0d41b9"
+      "sha256": "026ee169a9948df0ddbe82d38412edaad5a6633524ba2d39a2e87a849da3bdc0"
     },
     {
       "path": "Source/TrapperFreightElevatorsEditor/Private/TFIronworksAssets.cpp",
@@ -453,7 +469,7 @@
     },
     {
       "path": "TrapperFreightElevators.uplugin",
-      "sha256": "d9cc22a48afe18adb6cf83ac30a3287f4668bd574f3b29d197186bc2dc153aaf"
+      "sha256": "5cd899f4851e2c19047326538a4e647dcc6fba3a9580755228bc3c3998cab935"
     }
   ]
 }

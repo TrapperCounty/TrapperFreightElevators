@@ -4,7 +4,7 @@
 
 For the GitHub beta, follow the [installation instructions](INSTALLATION.md). Satisfactory Mod Repository publication is still pending; once available there, install **Trapper's Freight Elevators** through Satisfactory Mod Manager. Install the same mod version on clients and server. Make a backup before updating an important factory.
 
-Complete the Freight Elevators HUB milestones: Mk.1 at tier 4, Mk.2 at tier 6, Mk.3 at tier 8. Search for **Freight** in the build menu.
+Complete the Freight Elevators HUB milestones: Mk.1 at tier 4, Mk.2 at tier 6, Mk.3 at tier 8. Open the build menu with **Q**, select **Freight Elevators**, then browse **Item Freight**, **Fluid Freight** or **Shafts**. Search for **Freight** also works.
 
 ## Build a tower
 

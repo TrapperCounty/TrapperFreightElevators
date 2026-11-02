@@ -1,6 +1,8 @@
 # Tester checklist
 
-Install **0.1.13** using [INSTALLATION.md](INSTALLATION.md), then use a backed-up or separate test save. No Unreal/editor tools are needed to play-test. Use normal launch without developer QA flags.
+Install **0.1.14** using [INSTALLATION.md](INSTALLATION.md), then use a backed-up or separate test save. No Unreal/editor tools are needed to play-test. Use normal launch without developer QA flags.
+
+For the 0.1.14 menu fix, check the Freight Elevators tab on both existing and new saves. Confirm unlocked item elevators/stops, fluid elevators/stops and the shaft appear in their groups without searching, and that selection opens the correct hologram. Locked tiers should remain hidden until unlocked.
 
 Test item and fluid deliveries, incoming/outgoing reservations from both host and joined clients, multiple destination weights, interrupted trips and power loss, save/reconnect/reload, shaft extensions and protected mass dismantling.
 

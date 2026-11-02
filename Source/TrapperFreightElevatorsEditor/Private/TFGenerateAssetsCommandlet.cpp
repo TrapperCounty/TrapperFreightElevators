@@ -5,6 +5,8 @@
 #include "FGRecipe.h"
 #include "FGSchematic.h"
 #include "FGCategory.h"
+#include "FGBuildCategory.h"
+#include "FGBuildSubCategory.h"
 #include "Engine/Texture2D.h"
 #include "Resources/FGBuildingDescriptor.h"
 #include "Unlocks/FGUnlockRecipe.h"
@@ -98,9 +100,23 @@ int32 UTFGenerateAssetsCommandlet::Main(const FString& Params)
     auto* Dark=Material(TEXT("M_Dark"),FLinearColor(.025,.045,.055),.65,.45);
     auto* Light=Material(TEXT("M_Light"),FLinearColor(.04,.85,.75),.1,.3,true);
     OK&=Save(Steel)&&Save(Orange)&&Save(Dark)&&Save(Light);
-    auto* Category=BP(TEXT("/TrapperFreightElevators/Categories/Cat_Freight"),UFGCategory::StaticClass());
+    auto* Category=BP(TEXT("/TrapperFreightElevators/Categories/Cat_Freight"),UFGBuildCategory::StaticClass());
     auto* CategoryCDO=Category->GeneratedClass->GetDefaultObject();V<FText>(CategoryCDO,TEXT("mDisplayName"))=FText::FromString(TEXT("Freight Elevators"));V<float>(CategoryCDO,TEXT("mMenuPriority"))=45;
     FSlateBrush CategoryIcon;CategoryIcon.SetResourceObject(Icon(TEXT("Category"),0,3,false));CategoryIcon.ImageSize=FVector2D(128);V<FSlateBrush>(CategoryCDO,TEXT("mCategoryIcon"))=CategoryIcon;OK&=Save(Category);
+    // The native browser filters category classes by UFGBuildCategory and
+    // UFGBuildSubCategory. Generic categories remain searchable but have no tab.
+    TArray<UClass*> SubCategories;
+    const TCHAR* GroupKeys[]={TEXT("Items"),TEXT("Fluids"),TEXT("Shafts")};
+    const TCHAR* GroupNames[]={TEXT("Item Freight"),TEXT("Fluid Freight"),TEXT("Shafts")};
+    for(int32 Group=0;Group<3;++Group)
+    {
+        auto* Sub=BP(FString(TEXT("/TrapperFreightElevators/Categories/SC_Freight"))+GroupKeys[Group],UFGBuildSubCategory::StaticClass());
+        auto* SubCDO=Sub->GeneratedClass->GetDefaultObject();
+        V<FText>(SubCDO,TEXT("mDisplayName"))=FText::FromString(GroupNames[Group]);
+        V<float>(SubCDO,TEXT("mMenuPriority"))=Group;
+        V<FSlateBrush>(SubCDO,TEXT("mCategoryIcon"))=CategoryIcon;
+        OK&=Save(Sub);SubCategories.Add(Sub->GeneratedClass.Get());
+    }
     TArray<TSubclassOf<UFGSchematic>> Schematics;
     for(int32 Tier=1;Tier<=3;++Tier)
     {
@@ -127,7 +143,7 @@ int32 UTFGenerateAssetsCommandlet::Main(const FString& Params)
             auto* Desc=BP(TEXT("/TrapperFreightElevators/Descriptors/Desc_")+Key,Class(TEXT("/Game/FactoryGame/Buildable/Factory/StorageContainerMk1/Desc_StorageContainerMk1")));
             auto* DescCDO=Desc->GeneratedClass->GetDefaultObject();V<TSubclassOf<AFGBuildable>>(DescCDO,TEXT("mBuildableClass"))=Build->GeneratedClass;
             V<FText>(DescCDO,TEXT("mDisplayName"))=FText::FromString(Name);
-            V<TSubclassOf<UFGCategory>>(DescCDO,TEXT("mCategory"))=Category->GeneratedClass;V<TArray<TSubclassOf<UFGCategory>>>(DescCDO,TEXT("mSubCategories")).Reset();
+            V<TSubclassOf<UFGCategory>>(DescCDO,TEXT("mCategory"))=Category->GeneratedClass;V<TArray<TSubclassOf<UFGCategory>>>(DescCDO,TEXT("mSubCategories"))={SubCategories[Type]};
             auto* Texture=Icon(Key,Kind,Tier,Type!=0);V<TObjectPtr<UTexture2D>>(DescCDO,TEXT("mSmallIcon"))=Texture;V<TObjectPtr<UTexture2D>>(DescCDO,TEXT("mPersistentBigIcon"))=Texture;
             auto* Recipe=BP(TEXT("/TrapperFreightElevators/Recipes/Recipe_")+Key,Class(TEXT("/Game/FactoryGame/Recipes/Buildings/Recipe_StorageContainerMk1")));
             auto* R=Recipe->GeneratedClass->GetDefaultObject();TArray<FItemAmount> Cost;
@@ -147,7 +163,7 @@ int32 UTFGenerateAssetsCommandlet::Main(const FString& Params)
             V<FText>(CDO,TEXT("mDisplayName"))=FText::FromString(TEXT("Freight Shaft / Vertical Zoop"));V<FText>(CDO,TEXT("mDescription"))=FText::FromString(TEXT("Snap to a freight drive or the top of an existing shaft. Click to anchor, aim up to Zoop 1 to 10 sections, then click to build. Scroll to fine-tune the count. Add stops afterward with 8m headroom. Extend the top later. Maximum tower height: 256m."));
             for(auto C:CDO->Art)if(!C->GetName().StartsWith(TEXT("IW_")))C->SetMaterial(0,C->GetName().Contains(TEXT("Brace"))?Orange:Steel);CDO->HideLegacyArt();
             auto* Desc=BP(TEXT("/TrapperFreightElevators/Descriptors/Desc_Shaft"),Class(TEXT("/Game/FactoryGame/Buildable/Factory/StorageContainerMk1/Desc_StorageContainerMk1")));auto* ShaftDesc=Desc->GeneratedClass->GetDefaultObject();V<TSubclassOf<AFGBuildable>>(ShaftDesc,TEXT("mBuildableClass"))=Build->GeneratedClass;
-            V<TSubclassOf<UFGCategory>>(ShaftDesc,TEXT("mCategory"))=Category->GeneratedClass;V<TArray<TSubclassOf<UFGCategory>>>(ShaftDesc,TEXT("mSubCategories")).Reset();auto* ShaftIcon=Icon(TEXT("Shaft"),2,1,false);V<TObjectPtr<UTexture2D>>(ShaftDesc,TEXT("mSmallIcon"))=ShaftIcon;V<TObjectPtr<UTexture2D>>(ShaftDesc,TEXT("mPersistentBigIcon"))=ShaftIcon;
+            V<TSubclassOf<UFGCategory>>(ShaftDesc,TEXT("mCategory"))=Category->GeneratedClass;V<TArray<TSubclassOf<UFGCategory>>>(ShaftDesc,TEXT("mSubCategories"))={SubCategories[2]};auto* ShaftIcon=Icon(TEXT("Shaft"),2,1,false);V<TObjectPtr<UTexture2D>>(ShaftDesc,TEXT("mSmallIcon"))=ShaftIcon;V<TObjectPtr<UTexture2D>>(ShaftDesc,TEXT("mPersistentBigIcon"))=ShaftIcon;
             auto* Recipe=BP(TEXT("/TrapperFreightElevators/Recipes/Recipe_Shaft"),Class(TEXT("/Game/FactoryGame/Recipes/Buildings/Recipe_StorageContainerMk1")));auto* R=Recipe->GeneratedClass->GetDefaultObject();
             V<TArray<FItemAmount>>(R,TEXT("mIngredients"))={Item(TEXT("SteelPlate"),4),Item(TEXT("Cement"),4)};FItemAmount P;P.ItemClass=Desc->GeneratedClass;P.Amount=1;V<TArray<FItemAmount>>(R,TEXT("mProduct"))={P};
             Bool(R,TEXT("mDisplayNameOverride"),true);V<FText>(R,TEXT("mDisplayName"))=FText::FromString(TEXT("Freight Shaft / Vertical Zoop"));Recipes.Add(Recipe->GeneratedClass.Get());OK&=Save(Build)&&Save(Desc)&&Save(Recipe);

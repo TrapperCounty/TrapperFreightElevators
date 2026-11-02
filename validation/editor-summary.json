@@ -1,12 +1,18 @@
 {
-  "succeeded": 4,
+  "succeeded": 5,
   "succeededWithWarnings": 0,
   "failed": 0,
   "notRun": 0,
+  "version": "0.1.14",
   "tests": [
     {
       "testDisplayName": "AutomaticShaft",
       "fullTestPath": "TrapperFreightElevators.AutomaticShaft",
+      "state": "Success"
+    },
+    {
+      "testDisplayName": "BuildMenu",
+      "fullTestPath": "TrapperFreightElevators.BuildMenu",
       "state": "Success"
     },
     {
