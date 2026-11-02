@@ -1,0 +1,9 @@
+PASS: Reserved 5 outgoing Iron Rod slots at 48m; returned 1000 Iron Plates to 16m incoming storage. Plate total before=9753 after=9753.
+Progress: rods stored=0, newly routed=0, plate free=0, cabin=0.0m, status=CLOSING GATES
+Progress: rods stored=0, newly routed=27, plate free=0, cabin=32.0m, status=LOADING SNAPSHOT
+Progress: rods stored=0, newly routed=627, plate free=0, cabin=32.0m, status=LOADING SNAPSHOT
+Progress: rods stored=0, newly routed=1000, plate free=0, cabin=11.8m, status=IN TRANSIT
+Progress: rods stored=0, newly routed=1000, plate free=0, cabin=16.0m, status=OPENING GATES
+Progress: rods stored=0, newly routed=1000, plate free=0, cabin=48.0m, status=OPENING GATES
+PASS: Live elevator delivered rods to 48m. Stored=75 newly routed=1000; reservation=5.
+PASS: Saved repaired factory as <private-save>

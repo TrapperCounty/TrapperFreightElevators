@@ -1,0 +1,28 @@
+{
+  "succeeded": 4,
+  "succeededWithWarnings": 0,
+  "failed": 0,
+  "notRun": 0,
+  "tests": [
+    {
+      "testDisplayName": "AutomaticShaft",
+      "fullTestPath": "TrapperFreightElevators.AutomaticShaft",
+      "state": "Success"
+    },
+    {
+      "testDisplayName": "IronworksAssets",
+      "fullTestPath": "TrapperFreightElevators.IronworksAssets",
+      "state": "Success"
+    },
+    {
+      "testDisplayName": "Motion",
+      "fullTestPath": "TrapperFreightElevators.Motion",
+      "state": "Success"
+    },
+    {
+      "testDisplayName": "Specifications",
+      "fullTestPath": "TrapperFreightElevators.Specifications",
+      "state": "Success"
+    }
+  ]
+}

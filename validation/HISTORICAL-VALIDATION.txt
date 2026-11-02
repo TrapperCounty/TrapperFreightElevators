@@ -1,0 +1,17 @@
+Historical report, with private save identifiers and workstation paths redacted. Publication status statements below describe the original test date.
+
+# Freight Elevators 0.1.13 validation
+
+Tested 1 November 2026 on Windows Steam Satisfactory CL 513885 with SML 3.12.0.
+
+Incoming and outgoing item-stack reservations are independent per floor. Both arrays save and replicate. The Reservations panel selects the buffer explicitly. Outgoing admission counts stored items and assigned cargo, permits shared overflow, and protects the unused allocation of other items. Unloading rechecks the current rules and retains blocked cargo onboard. Changing a rule never deletes or relocates items automatically. Existing saves retain incoming rules and start with no outgoing rules.
+
+Four editor suites and 107 Windows dedicated-server integration checks passed. The 13 added checks cover default capacity, independent buffers/floors, shared overflow, invalid and over-capacity rules, pre-existing excess cargo, destination routing, in-flight accounting, unloading, partial stacks, changes after pickup, and rule removal. Prior incoming-belt, native power, fluid, and transport checks remain green. No remote multiplayer client, Epic runtime, or Linux runtime test was performed for this update.
+
+The user's live factory was saved through the native UI as <private-save> and backed up before installation. SHA-256: F8CAE8158F88B132A9D482331CD5DBBF4BC6280E18057C79D43A137CB54395C5. The opt-in local repair targets the explicitly named 48m and 16m stops on the same tower. It reserves five outgoing Iron Rod stacks, returns only the plates necessary to free the allocation to existing incoming storage, verifies the plate total before/after, then waits for normal rod routing and delivery. No fixtures are spawned in the user's factory. Autosave is disabled during validation.
+
+An initial live run delivered rods but encountered a test-helper lifetime error when clearing its executing timer before using captured state to save. The original save was unchanged. The helper now clears its timer only after its final state access; corrected live/save/reload results are recorded below.
+
+Corrected live test: five outgoing Iron Rod slots were configured at 48m; 1,000 Iron Plates were returned to the 16m incoming buffer with the combined plate count unchanged at 9,753. The elevator routed 1,000 rods and began unloading them at 48m, then successfully saved <private-save> Its SHA-256 is 9ABE44697ABD901144F2818C513F290E1197E49CAC83C35CC451F9F5FD7CE63C. Native UI inspection showed 48 total / 5 reserved / 43 shared and Iron Rod / 5 reserved stacks. The actual item picker, count entry and Save reservation button were exercised successfully, and Iron Rod stacks were observed in Outgoing storage.
+
+Native reload passed: the five outgoing Iron Rod slots persisted, the route counter remained 1,000, and 606 rods were present at the verification sample while normal unloading resumed. All three final platform packages built and passed ZIP verification; all ten installed Windows files matched the final archive. Evidence is in QA/FreightElevators/Outgoing113 (editor-tests.json, server.txt, live-repair.txt, reload.txt, build-final.log and save backups). The QA server is stopped. Nothing was published.

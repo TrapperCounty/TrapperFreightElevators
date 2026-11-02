@@ -1,0 +1,1 @@
+PASS: Native save reload retained five outgoing Iron Rod slots; stored rods=606, routed rods=1000.

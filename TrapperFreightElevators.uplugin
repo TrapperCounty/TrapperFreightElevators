@@ -1,0 +1,22 @@
+{
+  "FileVersion": 3,
+  "Version": 14,
+  "VersionName": "0.1.13",
+  "SemVersion": "0.1.13",
+  "FriendlyName": "Trapper's Freight Elevators",
+  "Description": "Modular freight elevators with programmable item and isolated fluid transport, floor buffers and four configurable ports.",
+  "CreatedBy": "TrapperCounty",
+  "Category": "Logistics",
+  "CanContainContent": true,
+  "EnabledByDefault": true,
+  "IsBetaVersion": true,
+  "GameVersion": ">=513885",
+  "Modules": [
+    { "Name": "TrapperFreightElevators", "Type": "Runtime", "LoadingPhase": "PostDefault" },
+    { "Name": "TrapperFreightElevatorsEditor", "Type": "Editor", "LoadingPhase": "PostDefault" }
+  ],
+  "Plugins": [
+    { "Name": "SML", "Enabled": true, "SemVersion": "^3.12.0" },
+    { "Name": "AbstractInstance", "Enabled": true, "BasePlugin": true }
+  ]
+}
