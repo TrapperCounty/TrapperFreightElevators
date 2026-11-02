@@ -1,0 +1,109 @@
+PASS: All solid and liquid test descriptors available
+PASS: Item and fluid drive / stop fixtures spawned
+PASS: Separate shafts discover only their own three floors
+PASS: Each direction has one complete cabin-load of item buffering
+PASS: Exactly four native ports on both elevator types
+PASS: Stops closer than eight metres rejected
+PASS: Stops off the one metre grid rejected
+PASS: Stops exceeding 248m usable travel rejected
+PASS: A high stop needs an existing shaft before placement
+PASS: Immediate pickup ships exactly the arrival snapshot
+PASS: Cabin manifest matches native cargo inventory
+PASS: Cargo arriving after the snapshot waits for another visit
+PASS: One item splits equally between two destination floors
+PASS: Cargo reserves destination buffer capacity before departure
+PASS: Dismantling cannot delete reserved or onboard cargo
+PASS: Only cargo for the docked floor unloads
+PASS: Snapshot pickup and two-floor delivery conserve every item
+PASS: A native conveyor output can withdraw delivered cargo
+PASS: Output filter blocks the wrong resource
+PASS: Weighted routing delivers a 70/30 split by item count
+PASS: A full destination does not block service to another floor
+PASS: Unrouted cargo remains in source storage
+PASS: An empty cabin finds a remote pickup request
+PASS: Wait-until-full mode accepts cargo arriving during the wait
+PASS: Depart-now prevents further loading
+PASS: A partial load waits before the per-floor time limit
+PASS: A partial load departs automatically when its maximum wait expires
+PASS: A sub-item frame budget keeps the cabin docked while transfer credit accumulates
+PASS: Snapshot loading continues across fractional-budget frames
+PASS: High-frame-rate loading completes the full snapshot before departure
+PASS: The maximum fill wait expires even while fresh cargo continues to arrive
+PASS: Cargo waits while landing gates open
+PASS: Door opening retains the arrival snapshot; later cargo stays in the floor buffer
+PASS: Cabin remains stationary until the gates close
+PASS: Pausing freezes the door sequence and cabin
+PASS: Cabin accelerates gently only after gates are fully closed
+PASS: A long frame lands exactly without transferring through closed gates
+PASS: Delivery starts after opening and conserves the shipment
+PASS: An empty fluid elevator changes to two compartments
+PASS: Water and oil receive separate compartment assignments
+PASS: Both fluid compartments wait for docking gates before pumping
+PASS: Fluid cargo is isolated and measured in cubic metres
+PASS: Loaded compartments cannot be reassigned or repartitioned
+PASS: Fluid destinations receive only their assigned compartments
+PASS: Multi-fluid delivery conserves total volume
+PASS: Fluid still in a floor tank prevents reassignment
+PASS: Queued floor flush runs safely without erasing another floor or reserved cabin cargo
+PASS: Four-compartment mode becomes available when all buffers are empty
+PASS: Unsupported compartment counts rejected
+PASS: Solid items cannot be assigned to fluid tanks
+PASS: Inventory click deposits only the room available and retains the remainder
+PASS: Compact inventory snapshot preserves the real slot index, resource and count
+PASS: Full incoming storage cannot lose or duplicate a clicked stack
+PASS: Manual deposits cannot bypass routing by writing into outgoing storage
+PASS: Stale item identity and invalid inventory slots are rejected
+PASS: Clicking delivered storage moves its real stack into player inventory
+PASS: Empty replicated slots retain their indices without native item instance state
+PASS: Item clicks cannot deposit solids into a fluid elevator
+PASS: Player-sized capsule sweeps are blocked on all four sides of freight machinery
+PASS: Freight body collision blocks players without intercepting connection-placement traces
+PASS: Port 1 direction configuration safely updates with or without rendered server signs
+PASS: New widely spaced item floors automatically fill all uncovered shaft height
+PASS: Automatic shaft blocks a player capsule in the formerly empty gap
+PASS: Automatic shaft does not intercept belt/pipe placement traces
+PASS: Manual shaft suppresses only its overlapping automatic geometry
+PASS: Removing a manual shaft restores automatic infill without changing floors
+PASS: Repeated shaft refresh does not duplicate geometry
+PASS: Removing the highest floor preserves migrated shaft height
+PASS: Removing all floors preserves migrated shaft independently
+PASS: Fluid elevators generate the same continuous shaft
+PASS: Unconfigured incoming storage retains all shared capacity
+PASS: Thirty-slot storage accepts five and ten reserved stacks
+PASS: Reserved items can use shared overflow; other items see only fifteen shared stacks
+PASS: Over-capacity reservation update is rejected without changing the previous rule
+PASS: Negative, missing, liquid and fluid-elevator reservations are rejected
+PASS: Manual deposit stops at the reserved boundary and keeps excess in player inventory
+PASS: Full shared allocation blocks further iron while the ten copper slots remain usable
+PASS: Other materials cannot consume the protected ten empty copper slots
+PASS: Three existing reserved stacks leave only two additional slots protected
+PASS: Partially filled reserved stacks remain fillable when every physical slot is occupied
+PASS: Changing a reservation never removes existing excess cargo
+PASS: A newly freed slot becomes available to the reserved material instead of refilling with excess
+PASS: Removing a reservation releases its space without modifying cargo
+PASS: Fully reserved storage has no capacity for unrelated materials
+PASS: Reservations are isolated to their configured floor
+PASS: Native conveyor fixture connects a blocked reserved input
+PASS: Unconfigured outgoing storage preserves shared capacity
+PASS: Outgoing buffer independently accepts five and ten reserved stacks
+PASS: Outgoing rules do not change incoming or another floor
+PASS: Outgoing reservations permit shared overflow while protecting other items
+PASS: Invalid outgoing updates leave the previous allocation intact
+PASS: Reservations never discard pre-existing excess deliveries
+PASS: Freed destination slot routes reserved cargo and rejects competing cargo
+PASS: Cargo in transit consumes capacity once and satisfies its reserved slots
+PASS: Reserved deliveries unload without double-counting onboard cargo
+PASS: Partial outgoing stacks remain fillable without stealing protected slots
+PASS: A reservation changed after pickup retains blocked cargo safely onboard
+PASS: Removing outgoing rule releases capacity while counting cargo still onboard
+PASS: Retained cargo unloads after its restriction is removed
+PASS: Drive receives power through a native electrical circuit
+PASS: Cabin moves continuously in the packaged game
+PASS: Power loss stops movement without teleporting the cabin
+PASS: Restoring power resumes the interrupted trip
+PASS: A battery-only native circuit powers the elevator and spends stored energy (powered=1 actual=10.000 target=10.000 remaining=9.994445)
+PASS: A real belt backs up at reserved space without consuming the waiting item
+PASS: An exhausted battery stops service without free power
+PASS: Freeing one shared slot resumes native belt intake with every item conserved
+
+RESULT: 107 checks, 0 failures

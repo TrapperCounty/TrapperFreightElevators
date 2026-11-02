@@ -1,7 +1,7 @@
 {
   "mod": "TrapperFreightElevators",
-  "version": "0.1.14",
-  "matches_release_source_archive": true,
+  "version": "0.1.15",
+  "matches_release_source_archive": false,
   "files": [
     {
       "path": "Content/Art/Icon_Category.uasset",
@@ -380,12 +380,24 @@
       "sha256": "5f049b8f9f232b6e2f3f339d931150df2a97ce47a36ac190f3c6b1fa2c6b4591"
     },
     {
+      "path": "Source/TrapperFreightElevators/Private/TFBuildingSnap.cpp",
+      "sha256": "0d42c9b4136e739fe246f71ec247ed39d62985c2bec303a257bc4c15e8c4cf3d"
+    },
+    {
       "path": "Source/TrapperFreightElevators/Private/TFBuildMenuTests.cpp",
       "sha256": "d72aee9d3af779460c89746c44d2dfdb64d1317faf59cd03cd0926098a55320d"
     },
     {
       "path": "Source/TrapperFreightElevators/Private/TFClientQA.cpp",
       "sha256": "df710be7c18907327de5df669e88db0ec457c293c804cc7d93aa575271a6a611"
+    },
+    {
+      "path": "Source/TrapperFreightElevators/Private/TFEnhancementQA.cpp",
+      "sha256": "d68270c29b77fc2b16d5a003698594e07de99a7e2de1b92e30029646aab6b822"
+    },
+    {
+      "path": "Source/TrapperFreightElevators/Private/TFEnhancementTests.cpp",
+      "sha256": "7ab680daa85b35a47199b028000e1705f88aa3c8130102ac8c62c7149798854a"
     },
     {
       "path": "Source/TrapperFreightElevators/Private/TFHologram.cpp",
@@ -397,11 +409,11 @@
     },
     {
       "path": "Source/TrapperFreightElevators/Private/TFPanel.cpp",
-      "sha256": "b986a92b039e77b5cf28e4dd1cfdfee18cf5bda5579fdc64559b8a2b656197d1"
+      "sha256": "9f7fc9de988f21847d60c45d1cf5ffa2046ff48c8aa5b3996dfa9e211c343c88"
     },
     {
       "path": "Source/TrapperFreightElevators/Private/TFQA.cpp",
-      "sha256": "8124b3ba49581502f6acb3c1fb5e52efcbd3e5e6ec92d1e2a5e07ceff3e9e300"
+      "sha256": "f59f412745161c0a10e50368b3d2aa316415da95bd653d207814186bfd0d3111"
     },
     {
       "path": "Source/TrapperFreightElevators/Private/TFTests.cpp",
@@ -417,11 +429,15 @@
     },
     {
       "path": "Source/TrapperFreightElevators/Private/TrapperFreightElevators.cpp",
-      "sha256": "dac15e2020587e21ec1645405549523e915df4a0d0105ace60848de39dbe09c0"
+      "sha256": "9e5a904092661b79cee7770c359c30d0ecb2c640e04b616f07dc05c8cef52acf"
     },
     {
       "path": "Source/TrapperFreightElevators/Public/TFBuildables.h",
       "sha256": "cf335386cc7299f384e367fd844135e8a746e63e4a7788b6f312be7c1de62b13"
+    },
+    {
+      "path": "Source/TrapperFreightElevators/Public/TFBuildingSnap.h",
+      "sha256": "5f83271213406527e0e8159ac121ec5cb97b4a914cdcfd6eccc91dca69806e3d"
     },
     {
       "path": "Source/TrapperFreightElevators/Public/TFHologram.h",
@@ -429,11 +445,15 @@
     },
     {
       "path": "Source/TrapperFreightElevators/Public/TFPanel.h",
-      "sha256": "0ec86bcef2959cf1744560d866704f03df00e101b98bff5652b36f189f0909bc"
+      "sha256": "5ee130c314696e8c8705410363258ce5412b57b26dbf9b0f94e3b13a208042b6"
     },
     {
       "path": "Source/TrapperFreightElevators/Public/TFShaftLayout.h",
       "sha256": "f41e756a67da804f28e9882cb3ecc8cedf3d0b12921f5e58d7af73dcaa35e6f7"
+    },
+    {
+      "path": "Source/TrapperFreightElevators/Public/TFStorageLayout.h",
+      "sha256": "3e8d8f02ceac2e8adedf279f2d2d291d65384b344cf1e22487f6ff0419d6a8d3"
     },
     {
       "path": "Source/TrapperFreightElevators/Public/TFTypes.h",
@@ -469,7 +489,7 @@
     },
     {
       "path": "TrapperFreightElevators.uplugin",
-      "sha256": "5cd899f4851e2c19047326538a4e647dcc6fba3a9580755228bc3c3998cab935"
+      "sha256": "261181d54fb1bc542f2b44d83bf4d85aa0e2a2fa3a48a6df48e500408d6bb10d"
     }
   ]
 }

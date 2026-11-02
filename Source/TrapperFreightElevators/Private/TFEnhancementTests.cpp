@@ -1,0 +1,113 @@
+#include "Misc/AutomationTest.h"
+#include "TFStorageLayout.h"
+#include "TFBuildingSnap.h"
+#include "TFPanel.h"
+#include "Resources/FGBuildingDescriptor.h"
+#include "Blueprint/WidgetTree.h"
+#include "Components/TextBlock.h"
+#include "UObject/UnrealType.h"
+
+#if WITH_DEV_AUTOMATION_TESTS
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FTFStorageLayoutTest,"TrapperFreightElevators.StorageDisplay",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FTFStorageLayoutTest::RunTest(const FString&)
+{
+    const TSubclassOf<UFGItemDescriptor> Iron=UFGItemDescriptor::StaticClass(),Copper=UFGBuildingDescriptor::StaticClass();
+    const auto Size=[](TSubclassOf<UFGItemDescriptor>){return 100;};
+    // Inventory constructors and SetItemClass are editor SDK stubs. Populate the
+    // serialized fields directly; the packaged-runtime fixture uses real constructors.
+    auto* ItemClass=FindFProperty<FClassProperty>(FInventoryItem::StaticStruct(),TEXT("ItemClass"));
+    if(!TestNotNull(TEXT("Inventory item class field available"),ItemClass))return false;
+    auto Stack=[ItemClass](int32 Count,TSubclassOf<UFGItemDescriptor> Resource)
+    {
+        FInventoryStack Result;Result.NumItems=Count;
+        ItemClass->SetObjectPropertyValue_InContainer(&Result.Item,Resource.Get());
+        return Result;
+    };
+    FTFStackReservation A;A.Resource=Iron;A.Stacks=4;
+    FTFStackReservation B;B.Resource=Copper;B.Stacks=1;
+    TArray<FInventoryStack> Stacks;for(int32 I=0;I<8;++I)Stacks.Add(Stack(0,nullptr));Stacks[6]=Stack(35,Iron);Stacks[2]=Stack(100,Copper);
+    auto CheckPermutation=[&](const TArray<FTFStorageTile>& Tiles,int32 Count)
+    {
+        TSet<int32> Seen;for(const auto& Tile:Tiles){TestTrue(TEXT("Mapped source is in range"),Tile.SourceIndex>=0&&Tile.SourceIndex<Count);Seen.Add(Tile.SourceIndex);}
+        TestEqual(TEXT("Exactly one tile per real slot"),Tiles.Num(),Count);TestEqual(TEXT("No source slot duplicated or hidden"),Seen.Num(),Count);
+    };
+    auto Tiles=TFStorageLayout(Stacks,8,{A,B},{},Size);CheckPermutation(Tiles,8);
+    for(int32 I=0;I<4;++I)TestEqual(TEXT("Four reserved iron tiles first"),Tiles[I].ReservedFor,Iron);
+    TestEqual(TEXT("Occupied iron tile maps to its actual slot"),Tiles[0].SourceIndex,6);
+    TestEqual(TEXT("Second rule claims copper before empty assignments"),Tiles[4].SourceIndex,2);
+    TestEqual(TEXT("Layout did not move inventory"),Stacks[6].NumItems,35);
+    TestFalse(TEXT("Empty reservation is immediately available"),Tiles[1].WaitingForSpace);
+    Tiles=TFStorageLayout(Stacks,8,{A,B},{{Iron,65}},Size);
+    TestFalse(TEXT("Transit that fits a partial stack consumes no extra tile"),Tiles[1].InTransit);
+    Tiles=TFStorageLayout(Stacks,8,{A,B},{{Iron,166}},Size);
+    TestTrue(TEXT("Transit claims first empty reserved tile"),Tiles[1].InTransit);
+    TestTrue(TEXT("Transit claims second empty reserved tile"),Tiles[2].InTransit);
+    TestFalse(TEXT("Other reserved tile stays empty"),Tiles[3].InTransit);
+    for(auto& Entry:Stacks)Entry=Stack(100,Copper);
+    Tiles=TFStorageLayout(Stacks,8,{A,B},{},Size);CheckPermutation(Tiles,8);
+    for(int32 I=0;I<4;++I)TestTrue(TEXT("Occupied conflict is shown as waiting"),Tiles[I].WaitingForSpace);
+    Tiles=TFStorageLayout(Stacks,8,{},{});CheckPermutation(Tiles,8);
+    for(int32 I=0;I<8;++I){TestEqual(TEXT("No rules retains physical order"),Tiles[I].SourceIndex,I);TestFalse(TEXT("Removed reservations leave shared tiles"),bool(Tiles[I].ReservedFor));}
+    A.Stacks=50;Tiles=TFStorageLayout(Stacks,8,{A,B},{},Size);CheckPermutation(Tiles,8);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FTFBuildingSnapTest,"TrapperFreightElevators.BuildingSnap",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FTFBuildingSnapTest::RunTest(const FString&)
+{
+    for(float Yaw:{0.f,37.f,90.f})
+    {
+        const FTransform Tower(FRotator(0,Yaw,0),FVector(1234,-5678,900));
+        for(FVector Face:{FVector(1,0,0),FVector(-1,0,0),FVector(0,1,0),FVector(0,-1,0)})
+        {
+            for(float Height:{100.f,200.f,400.f})
+            {
+                FTransform Snap;
+                TestTrue(TEXT("All foundation thicknesses snap on every rotated face"),FTFBuildingSnap::Solve(Tower,4000,{1600},Tower.TransformPosition(Face*395+FVector(0,0,1590)),Tower.TransformVectorNoScale(Face),false,FVector(800,800,Height),90,Snap));
+                TestTrue(TEXT("Foundation edge is flush and top aligns to landing"),Tower.InverseTransformPosition(Snap.GetLocation()).Equals(Face*800+FVector(0,0,1600-Height*.5f),.01));
+            }
+            FTransform Snap;
+            TestTrue(TEXT("Wall snaps between stops"),FTFBuildingSnap::Solve(Tower,4000,{1600},Tower.TransformPosition(Face*395+FVector(0,0,2401)),Tower.TransformVectorNoScale(Face),true,FVector(800,1,400),0,Snap));
+            TestTrue(TEXT("Wall base is on shaft face and height grid"),Tower.InverseTransformPosition(Snap.GetLocation()).Equals(Face*400+FVector(0,0,2400),.01));
+            TestTrue(TEXT("Wall width runs along face"),FMath::Abs(FVector::DotProduct(Snap.GetRotation().GetAxisX(),Tower.TransformVectorNoScale(Face)))<.001);
+        }
+    }
+    FTransform Out;
+    auto Solve=[&](float Z,bool Wall=true,float Top=4000){return FTFBuildingSnap::Solve(FTransform::Identity,Top,{1600},FVector(395,0,Z),FVector(1,0,0),Wall,FVector(800,800,400),0,Out);};
+    TestFalse(TEXT("Wall cannot cover a landing opening"),Solve(1600));
+    TestFalse(TEXT("Wall cannot overlap the bottom of an opening"),Solve(1400));
+    TestFalse(TEXT("Foundation cannot cross a landing's ports"),Solve(1800,false));
+    TestTrue(TEXT("Foundation at landing deck is allowed"),Solve(1600,false));
+    TestFalse(TEXT("Wall leaves drive control panel clear"),Solve(400));
+    TestFalse(TEXT("Wall cannot extend above the shaft"),Solve(3900));
+    TestFalse(TEXT("No snapping beyond built shaft"),Solve(4100,false));
+    TestTrue(TEXT("Extending the shaft adds snap levels"),Solve(4100,false,4400));
+    TestTrue(TEXT("Unrotated rectangular foundation snaps"),FTFBuildingSnap::Solve(FTransform::Identity,4000,{},FVector(395,0,1200),FVector(1,0,0),false,FVector(800,400,100),0,Out));
+    TestTrue(TEXT("Rectangular unrotated extent"),Out.GetLocation().Equals(FVector(800,0,1150)));
+    TestTrue(TEXT("Rotated rectangular foundation snaps"),FTFBuildingSnap::Solve(FTransform::Identity,4000,{},FVector(395,0,1200),FVector(1,0,0),false,FVector(800,400,100),90,Out));
+    TestTrue(TEXT("Rectangular rotated extent"),Out.GetLocation().Equals(FVector(600,0,1150),.01));
+    TestTrue(TEXT("Inner frame surface can snap"),FTFBuildingSnap::Solve(FTransform::Identity,4000,{},FVector(380,0,1200),FVector(-1,0,0),false,FVector(800,800,100),0,Out));
+    TestTrue(TEXT("Inner frame normal does not jump to opposite face"),Out.GetLocation().Equals(FVector(800,0,1150),.01));
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FTFResourceSearchTest,"TrapperFreightElevators.ResourceSearch",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FTFResourceSearchTest::RunTest(const FString&)
+{
+    auto* Panel=NewObject<UTFPanel>();Panel->WidgetTree=NewObject<UWidgetTree>(Panel);
+    Panel->ResourceChoice=Panel->WidgetTree->ConstructWidget<UTFResourceCombo>();
+    Panel->ResourceSummary=Panel->WidgetTree->ConstructWidget<UTextBlock>();
+    const TSubclassOf<UFGItemDescriptor> Resource=UFGItemDescriptor::StaticClass();
+    Panel->AllResources={Resource};Panel->SelectedResource=Resource;Panel->FilterResources();
+    TestEqual(TEXT("Selected resource maps to first result"),Panel->ResourceChoice->GetSelectedIndex(),1);
+    Panel->SearchQuery=TEXT("__no_such_item_384723__");Panel->FilterResources();
+    TestEqual(TEXT("Empty results keep only the explicit clear option"),Panel->ResourceChoice->GetOptionCount(),1);
+    TestEqual(TEXT("Filtering out selection preserves its identity"),Panel->ChosenResource(),Resource);
+    TestEqual(TEXT("Hidden selection does not select Any item"),Panel->ResourceChoice->GetSelectedIndex(),INDEX_NONE);
+    Panel->SearchQuery.Empty();Panel->FilterResources();
+    TestEqual(TEXT("Clearing search restores selected option"),Panel->ResourceChoice->GetSelectedIndex(),1);
+    Panel->ResourceChoice->SetSelectedIndex(0);Panel->ResourceChanged(TEXT("Any item"),ESelectInfo::Direct);
+    TestFalse(TEXT("Explicit Any item clears selected resource"),bool(Panel->ChosenResource()));
+    return true;
+}
+#endif

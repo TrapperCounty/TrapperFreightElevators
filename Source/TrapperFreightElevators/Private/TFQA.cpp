@@ -992,9 +992,11 @@ namespace
     };
 }
 void TFStartOutgoingQA(UWorld* World);
+void TFStartEnhancementQA(UWorld* World);
 void TFStartQA(UWorld* World)
 {
     TFStartOutgoingQA(World);
+    TFStartEnhancementQA(World);
     if(World&&World->GetNetMode()==NM_Standalone&&FParse::Param(FCommandLine::Get(),TEXT("TFScrollShaftReload")))
     {
         TWeakObjectPtr<UWorld> W=World;FTimerHandle Timer;World->GetTimerManager().SetTimer(Timer,FTimerDelegate::CreateLambda([W]
