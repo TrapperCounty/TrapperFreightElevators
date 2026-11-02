@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.1.15 - dashboard and shaft snapping (unreleased candidate)
+
+- Snap flat foundations and straight 8 m walls to all four shaft faces on a 1 m height grid. Foundation tops align to landing heights; snapping leaves stop openings and the drive controls clear. Rotated towers and Powered Foundations use the same alignment.
+- Darker dashboard selected, hover and pressed states, with a visible keyboard/controller focus outline.
+- Blue reserved slots in both storage buffers, faint item icons for empty reservations, and amber WAIT markers where existing cargo still occupies the allocation. Displayed stacks retain their original transfer targets.
+- Type to filter the shared item/fluid picker in Ports, Routes, Reservations and Fluid tanks. Search preserves the selected item, including when it is filtered out. Clear restores the full list.
+
+No saved inventory, routing rules or buildable classes are migrated. This candidate has not been published. See [validation](docs/VALIDATION.md) for test coverage.
+
 ## 0.1.14 - build-menu category fix
 
 Addresses [issue #1](https://github.com/TrapperCounty/TrapperFreightElevators/issues/1): unlocked freight recipes appeared in search but were missing when browsing build categories.

@@ -1,5 +1,9 @@
 #include "TFPanel.h"
 #include "TFBuildables.h"
+#include "TFStorageLayout.h"
+#include "Brushes/SlateRoundedBoxBrush.h"
+#include "Misc/ScopeExit.h"
+#include "Widgets/Input/SComboBox.h"
 #include "FGPlayerController.h"
 #include "FGCharacterPlayer.h"
 #include "FGRecipeManager.h"
@@ -38,6 +42,12 @@ namespace
         // Popup rows use a dark background; the closed button keeps its native foreground.
         auto Style=Choice->GetItemStyle();Style.SetTextColor(FSlateColor(FLinearColor::White));Style.SetSelectedTextColor(FSlateColor(FLinearColor::White));Choice->SetItemStyle(Style);
     }
+}
+
+void UTFResourceCombo::OpenResults(bool Open,bool Focus)
+{
+    // UComboBoxString::SetIsOpen is not exported by the game. Use the supported Slate control.
+    if(MyComboBox.IsValid())MyComboBox->SetIsOpen(Open,Focus);
 }
 
 UTFInstanceModule::UTFInstanceModule() { RemoteCallObjects.Add(UTFRemoteCall::StaticClass()); }
@@ -150,11 +160,27 @@ UVerticalBox* UTFPanel::Column(UHorizontalBox* Row,float WeightValue)
 }
 UButton* UTFPanel::Button(UVerticalBox* Parent,const FString& Label,int32 Action,int32 A,int32 B)
 {
-    auto* Button=WidgetTree->ConstructWidget<UButton>();Button->SetBackgroundColor(FLinearColor(.19,.21,.23));
+    auto* Button=WidgetTree->ConstructWidget<UButton>();Button->SetBackgroundColor(FLinearColor::White);
     auto* T=WidgetTree->ConstructWidget<UTextBlock>();T->SetText(FText::FromString(Label));auto Font=T->GetFont();Font.Size=17;T->SetFont(Font);T->SetColorAndOpacity(FSlateColor(FLinearColor::White));
     auto* ButtonPadding=WidgetTree->ConstructWidget<UBorder>();ButtonPadding->SetBrushColor(FLinearColor::Transparent);ButtonPadding->SetPadding(FMargin(12,7));ButtonPadding->AddChild(T);Button->AddChild(ButtonPadding);
     Parent->AddChildToVerticalBox(Button)->SetPadding(FMargin(0,3));
-    auto* Handler=NewObject<UTFButtonAction>(this);Handler->Panel=this;Handler->Action=Action;Handler->A=A;Handler->B=B;Actions.Add(Handler);Button->OnClicked.AddDynamic(Handler,&UTFButtonAction::Click);return Button;
+    auto* Handler=NewObject<UTFButtonAction>(this);Handler->Panel=this;Handler->Button=Button;Handler->Action=Action;Handler->A=A;Handler->B=B;
+    Handler->Selected=(Action==100&&Page==A)||(Action==102&&StorageView==A)||(Action==103&&SelectedPort==A)||(Action==104&&ReservationBuffer==A);
+    if(Action==14)if(auto* D=IsValid(Anchor)?Anchor->Drive():nullptr)Handler->Selected=D->Compartments==B;
+    Actions.Add(Handler);Handler->RefreshStyle();Button->OnClicked.AddDynamic(Handler,&UTFButtonAction::Click);return Button;
+}
+void UTFButtonAction::RefreshStyle()
+{
+    if(!Button)return;
+    const bool Focused=Button->HasKeyboardFocus()||(Panel->GetOwningPlayer()&&Button->HasUserFocus(Panel->GetOwningPlayer()));
+    const int32 State=(Selected?1:0)|(Focused?2:0);
+    if(StyleState==State)return;StyleState=State;
+    const FLinearColor Edge=Focused?FLinearColor(.95,.9,.72):Selected?FLinearColor(.8,.34,.06):FLinearColor(.24,.27,.3);
+    FButtonStyle Style=Button->GetStyle();
+    Style.SetNormal(FSlateRoundedBoxBrush(Selected?FLinearColor(.24,.075,.018):FLinearColor(.12,.14,.16),4.f,Edge,Focused?3.f:2.f));
+    Style.SetHovered(FSlateRoundedBoxBrush(FLinearColor(.035,.045,.055),4.f,FLinearColor(.95,.73,.35),3.f));
+    Style.SetPressed(FSlateRoundedBoxBrush(FLinearColor(.018,.025,.03),4.f,FLinearColor(1,.8,.42),3.f));
+    Button->SetStyle(Style);
 }
 void UTFButtonAction::Click(){if(!Panel)return;if(Action==200)Panel->MoveInventory(A,B,Resource);else Panel->Handle(Action,A,B,Resource);}
 TSharedRef<SWidget> UTFPanel::RebuildWidget()
@@ -169,15 +195,63 @@ TSharedRef<SWidget> UTFPanel::RebuildWidget()
     Body=WidgetTree->ConstructWidget<UVerticalBox>();Scroll->AddChild(Body);Build();return Super::RebuildWidget();
 }
 ATFStop* UTFPanel::Selected() const{auto* D=IsValid(Anchor)?Anchor->Drive():nullptr;return D&&D->Stops.IsValidIndex(SelectedFloor)?D->Stops[SelectedFloor].Get():nullptr;}
-TSubclassOf<UFGItemDescriptor> UTFPanel::ChosenResource() const{int32 I=ResourceChoice?ResourceChoice->GetSelectedIndex()-1:INDEX_NONE;return Resources.IsValidIndex(I)?Resources[I]:nullptr;}
+TSubclassOf<UFGItemDescriptor> UTFPanel::ChosenResource() const{return SelectedResource;}
 void UTFPanel::ResourcePicker(UVerticalBox* Parent,TSubclassOf<UFGItemDescriptor> Current)
 {
-    auto* D=Anchor->Drive();ResourceChoice=WidgetTree->ConstructWidget<UComboBoxString>();ReadableChoices(ResourceChoice);ResourceChoice->AddOption(Page==1?TEXT("Any item"):(D->IsFluid?TEXT("Choose fluid"):TEXT("Choose item")));
-    if(auto* RM=AFGRecipeManager::Get(GetWorld()))for(auto R:RM->GetAllItemDescriptors())if(R&&UFGItemDescriptor::GetForm(R)==(D->IsFluid?EResourceForm::RF_LIQUID:EResourceForm::RF_SOLID))Resources.AddUnique(R);
-    Resources.Sort([](const TSubclassOf<UFGItemDescriptor>& A,const TSubclassOf<UFGItemDescriptor>& B){return TF::ResourceName(A)<TF::ResourceName(B);});
-    for(auto R:Resources)ResourceChoice->AddOption(TF::ResourceName(R));ResourceChoice->SetSelectedIndex(Resources.IndexOfByKey(Current)+1);Parent->AddChildToVerticalBox(ResourceChoice)->SetPadding(FMargin(0,6));
+    auto* D=Anchor->Drive();SelectedResource=Current;
+    auto* SearchRow=WidgetTree->ConstructWidget<UHorizontalBox>();Parent->AddChildToVerticalBox(SearchRow);
+    ResourceSearch=WidgetTree->ConstructWidget<UEditableTextBox>();ResourceSearch->SetForegroundColor(FLinearColor::Black);ResourceSearch->SetHintText(FText::FromString(D->IsFluid?TEXT("Search fluids..."):TEXT("Search items...")));
+    ResourceSearch->SetText(FText::FromString(SearchQuery));ResourceSearch->OnTextChanged.AddDynamic(this,&UTFPanel::ResourceSearchChanged);
+    Column(SearchRow,5)->AddChildToVerticalBox(ResourceSearch);Button(Column(SearchRow,1),TEXT("Clear"),105);
+    ResourceChoice=WidgetTree->ConstructWidget<UTFResourceCombo>();ReadableChoices(ResourceChoice);
+    auto ComboStyle=ResourceChoice->GetWidgetStyle();
+    ComboStyle.ComboButtonStyle.ButtonStyle.SetNormal(FSlateRoundedBoxBrush(FLinearColor(.10,.12,.14),3.f));
+    ComboStyle.ComboButtonStyle.ButtonStyle.SetHovered(FSlateRoundedBoxBrush(FLinearColor(.035,.045,.055),3.f,FLinearColor(.95,.73,.35),2.f));
+    ComboStyle.ComboButtonStyle.ButtonStyle.SetPressed(FSlateRoundedBoxBrush(FLinearColor(.018,.025,.03),3.f));
+    ResourceChoice->SetWidgetStyle(ComboStyle);
+    ResourceChoice->OnGenerateWidgetEvent.BindDynamic(this,&UTFPanel::ResourceRow);
+    ResourceChoice->OnSelectionChanged.AddDynamic(this,&UTFPanel::ResourceChanged);
+    if(auto* RM=AFGRecipeManager::Get(GetWorld()))for(auto R:RM->GetAllItemDescriptors())if(R&&UFGItemDescriptor::GetForm(R)==(D->IsFluid?EResourceForm::RF_LIQUID:EResourceForm::RF_SOLID))AllResources.AddUnique(R);
+    AllResources.Sort([](const TSubclassOf<UFGItemDescriptor>& A,const TSubclassOf<UFGItemDescriptor>& B){return TF::ResourceName(A)<TF::ResourceName(B);});
+    Parent->AddChildToVerticalBox(ResourceChoice)->SetPadding(FMargin(0,6));ResourceSummary=Text(Parent,TEXT(""),14);FilterResources();
 }
-void UTFPanel::FloorChanged(FString,ESelectInfo::Type){if(FloorChoice&&FloorChoice->GetSelectedIndex()>=0&&SelectedFloor!=FloorChoice->GetSelectedIndex()){SelectedFloor=FloorChoice->GetSelectedIndex();FlushArmed=false;PendingFeedback.Empty();RebuildDelay=.01f;}}
+void UTFPanel::FilterResources()
+{
+    if(!ResourceChoice)return;
+    UpdatingResourcePicker=true;ResourceChoice->ClearOptions();Resources.Reset();
+    const bool Fluid=IsValid(Anchor)&&Anchor->Drive()&&Anchor->Drive()->IsFluid;
+    ResourceChoice->AddOption(Page==1?TEXT("Any item"):Fluid?TEXT("Choose fluid"):TEXT("Choose item"));
+    for(auto R:AllResources)if(SearchQuery.IsEmpty()||TF::ResourceName(R).Contains(SearchQuery,ESearchCase::IgnoreCase))Resources.Add(R);
+    for(auto R:Resources)
+    {
+        FString Label=TF::ResourceName(R);
+        if(AllResources.ContainsByPredicate([&](auto Other){return Other!=R&&TF::ResourceName(Other)==Label;}))Label+=TEXT(" [")+R->GetPathName()+TEXT("]");
+        ResourceChoice->AddOption(Label);
+    }
+    const int32 Index=Resources.IndexOfByKey(SelectedResource);
+    if(SelectedResource&&Index==INDEX_NONE)ResourceChoice->ClearSelection();else ResourceChoice->SetSelectedIndex(Index+1);
+    ResourceSummary->SetText(FText::FromString((Resources.IsEmpty()?FString(TEXT("No matching items. ")):FString::Printf(TEXT("%d matches. "),Resources.Num()))+(SelectedResource?TEXT("Selected: ")+TF::ResourceName(SelectedResource):TEXT(""))));
+    UpdatingResourcePicker=false;
+}
+void UTFPanel::ResourceSearchChanged(const FText& Value){SearchQuery=Value.ToString().TrimStartAndEnd();FilterResources();if(ResourceChoice)ResourceChoice->OpenResults(!SearchQuery.IsEmpty());}
+void UTFPanel::ResourceChanged(FString,ESelectInfo::Type)
+{
+    if(UpdatingResourcePicker||!ResourceChoice)return;
+    const int32 I=ResourceChoice->GetSelectedIndex()-1;SelectedResource=Resources.IsValidIndex(I)?Resources[I]:nullptr;
+    if(ResourceSummary)ResourceSummary->SetText(FText::FromString(SelectedResource?TEXT("Selected: ")+TF::ResourceName(SelectedResource):TEXT("No item selected")));
+}
+UWidget* UTFPanel::ResourceRow(FString Value)
+{
+    auto* Row=WidgetTree->ConstructWidget<UHorizontalBox>();
+    const int32 I=ResourceChoice?ResourceChoice->FindOptionIndex(Value)-1:INDEX_NONE;
+    if(Resources.IsValidIndex(I))
+    {
+        auto* Icon=WidgetTree->ConstructWidget<UImage>();Icon->SetBrushFromTexture(UFGItemDescriptor::GetSmallIcon(Resources[I]));
+        auto* Size=WidgetTree->ConstructWidget<USizeBox>();Size->SetWidthOverride(28);Size->SetHeightOverride(28);Size->AddChild(Icon);Row->AddChildToHorizontalBox(Size);
+    }
+    auto* Label=WidgetTree->ConstructWidget<UTextBlock>();Label->SetText(FText::FromString(Value));Label->SetColorAndOpacity(FSlateColor(FLinearColor::White));Row->AddChildToHorizontalBox(Label)->SetPadding(FMargin(6,3));return Row;
+}
+void UTFPanel::FloorChanged(FString,ESelectInfo::Type){if(FloorChoice&&FloorChoice->GetSelectedIndex()>=0&&SelectedFloor!=FloorChoice->GetSelectedIndex()){SelectedFloor=FloorChoice->GetSelectedIndex();FlushArmed=false;FloorRebuild=true;PendingFeedback.Empty();RebuildDelay=.01f;}}
 void UTFPanel::InventoryGrid(UVerticalBox* Parent,int32 Bucket,int32 Slots,int32 Columns)
 {
     auto* Grid=WidgetTree->ConstructWidget<UUniformGridPanel>();Grid->SetSlotPadding(FMargin(2));Parent->AddChildToVerticalBox(Grid);
@@ -185,12 +259,14 @@ void UTFPanel::InventoryGrid(UVerticalBox* Parent,int32 Bucket,int32 Slots,int32
     {
         auto* Tile=NewObject<UTFInventoryTile>(this);Tile->Bucket=Bucket;Tile->Index=I;Tiles.Add(Tile);
         auto* Size=WidgetTree->ConstructWidget<USizeBox>();Size->SetWidthOverride(56);Size->SetHeightOverride(56);Grid->AddChildToUniformGrid(Size,I/Columns,I%Columns);
-        Tile->Button=WidgetTree->ConstructWidget<UButton>();Size->AddChild(Tile->Button);
+        Tile->Frame=WidgetTree->ConstructWidget<UBorder>();Tile->Frame->SetPadding(FMargin(2));Size->AddChild(Tile->Frame);
+        Tile->Button=WidgetTree->ConstructWidget<UButton>();Tile->Frame->AddChild(Tile->Button);
         FButtonStyle Style=Tile->Button->GetStyle();Style.SetNormalPadding(FMargin(0));Style.SetPressedPadding(FMargin(0));FSlateBrush Brush;Brush.DrawAs=ESlateBrushDrawType::Box;Brush.TintColor=FSlateColor(FLinearColor(.35,.35,.35));Style.SetNormal(Brush);Brush.TintColor=FSlateColor(FLinearColor(.65,.65,.65));Style.SetHovered(Brush);Brush.TintColor=FSlateColor(FLinearColor(.9,.45,.12));Style.SetPressed(Brush);Tile->Button->SetStyle(Style);
         auto* Overlay=WidgetTree->ConstructWidget<UOverlay>();auto* ContentSlot=Cast<UButtonSlot>(Tile->Button->AddChild(Overlay));ContentSlot->SetPadding(FMargin(0));ContentSlot->SetHorizontalAlignment(HAlign_Fill);ContentSlot->SetVerticalAlignment(VAlign_Fill);
         Tile->Icon=WidgetTree->ConstructWidget<UImage>();FSlateBrush IconBrush;IconBrush.SetImageSize(FVector2D(56,56));Tile->Icon->SetBrush(IconBrush);Tile->Icon->SetVisibility(ESlateVisibility::HitTestInvisible);auto* IconSlot=Overlay->AddChildToOverlay(Tile->Icon);IconSlot->SetHorizontalAlignment(HAlign_Fill);IconSlot->SetVerticalAlignment(VAlign_Fill);
         Tile->Badge=WidgetTree->ConstructWidget<UBorder>();Tile->Badge->SetBrushColor(FLinearColor(.94,.43,.11));Tile->Badge->SetPadding(FMargin(3,0));Tile->Badge->SetVisibility(ESlateVisibility::HitTestInvisible);auto* CountSlot=Overlay->AddChildToOverlay(Tile->Badge);CountSlot->SetHorizontalAlignment(HAlign_Fill);CountSlot->SetVerticalAlignment(VAlign_Bottom);
         Tile->Count=WidgetTree->ConstructWidget<UTextBlock>();auto Font=Tile->Count->GetFont();Font.Size=20;Font.TypefaceFontName=TEXT("Bold");Tile->Count->SetFont(Font);Tile->Count->SetJustification(ETextJustify::Right);Tile->Count->SetColorAndOpacity(FSlateColor(FLinearColor::White));Tile->Badge->AddChild(Tile->Count);
+        Tile->ReservationMark=WidgetTree->ConstructWidget<UTextBlock>();auto MarkFont=Tile->ReservationMark->GetFont();MarkFont.Size=12;MarkFont.TypefaceFontName=TEXT("Bold");Tile->ReservationMark->SetFont(MarkFont);Tile->ReservationMark->SetColorAndOpacity(FSlateColor(FLinearColor::White));Tile->ReservationMark->SetVisibility(ESlateVisibility::HitTestInvisible);Overlay->AddChildToOverlay(Tile->ReservationMark)->SetVerticalAlignment(VAlign_Top);
         Tile->Action=NewObject<UTFButtonAction>(this);Tile->Action->Panel=this;Tile->Action->Action=200;Tile->Action->A=Bucket;Tile->Action->B=I;Actions.Add(Tile->Action);Tile->Button->OnClicked.AddDynamic(Tile->Action,&UTFButtonAction::Click);
     }
 }
@@ -207,13 +283,35 @@ void UTFPanel::RefreshStorage()
     TMap<TSubclassOf<UFGItemDescriptor>,int32> Cargo;for(const auto& C:D->Cargo)Cargo.FindOrAdd(C.Resource)+=FMath::RoundToInt(C.Amount);
     TArray<TSubclassOf<UFGItemDescriptor>> Keys;Cargo.GetKeys(Keys);Keys.Sort([](const TSubclassOf<UFGItemDescriptor>& A,const TSubclassOf<UFGItemDescriptor>& B){return TF::ResourceName(A)<TF::ResourceName(B);});
     for(auto R:Keys)for(int32 Left=Cargo[R];Left>0;){const int32 N=FMath::Min(Left,TF::StackSize(R));Cabin.Add(FInventoryStack(N,R));Left-=N;}
+    TMap<TSubclassOf<UFGItemDescriptor>,int32> Transit;
+    for(const auto& C:D->Cargo)if(C.Destination==S)Transit.FindOrAdd(C.Resource)+=FMath::RoundToInt(C.Amount);
+    const int32 Capacity=FTFStats::ForTier(D->Tier).Stacks;
+    const auto IncomingLayout=TFStorageLayout(In,Capacity,S->IncomingReservations,{});
+    const auto OutgoingLayout=TFStorageLayout(Out,Capacity,S->OutgoingReservations,Transit);
     for(auto T:Tiles)
     {
         const auto& Stacks=T->Bucket==0?In:T->Bucket==1?Out:T->Bucket==2?Cabin:Player;
-        const bool Has=Stacks.IsValidIndex(T->Index)&&Stacks[T->Index].HasItems();auto R=Has?Stacks[T->Index].Item.GetItemClass():nullptr;const int32 Count=Has?Stacks[T->Index].NumItems:0;
-        if(T->ShownResource==R&&T->ShownCount==Count)continue;T->ShownResource=R;T->ShownCount=Count;T->Action->Resource=R;
-        if(Has)T->Icon->SetBrushFromTexture(UFGItemDescriptor::GetSmallIcon(R));T->Icon->SetVisibility(Has?ESlateVisibility::HitTestInvisible:ESlateVisibility::Hidden);T->Badge->SetVisibility(Has?ESlateVisibility::HitTestInvisible:ESlateVisibility::Hidden);T->Count->SetText(FText::AsNumber(Count));T->Button->SetIsEnabled(Has&&T->Bucket!=2);
-        T->Button->SetToolTipText(FText::FromString(Has?TF::ResourceName(R)+FString::Printf(TEXT(" x %d"),Count)+(T->Bucket==3?TEXT("\nClick to put into Incoming storage"):T->Bucket==2?TEXT("\nOnboard cargo is read-only"):TEXT("\nClick to take this stack")):TEXT("Empty slot")));
+        FTFStorageTile View;View.SourceIndex=T->Index;
+        if(T->Bucket==0&&IncomingLayout.IsValidIndex(T->Index))View=IncomingLayout[T->Index];
+        if(T->Bucket==1&&OutgoingLayout.IsValidIndex(T->Index))View=OutgoingLayout[T->Index];
+        const bool Has=Stacks.IsValidIndex(View.SourceIndex)&&Stacks[View.SourceIndex].HasItems();auto R=Has?Stacks[View.SourceIndex].Item.GetItemClass():nullptr;const int32 Count=Has?Stacks[View.SourceIndex].NumItems:0;
+        auto IconResource=Has?R:View.ReservedFor;
+        if(T->ShownResource!=IconResource){T->ShownResource=IconResource;if(IconResource)T->Icon->SetBrushFromTexture(UFGItemDescriptor::GetSmallIcon(IconResource));}
+        if(T->ShownCount!=Count){T->ShownCount=Count;T->Count->SetText(FText::AsNumber(Count));}
+        T->Action->Resource=R;T->Action->B=View.SourceIndex;
+        T->Icon->SetVisibility(IconResource?ESlateVisibility::HitTestInvisible:ESlateVisibility::Hidden);T->Icon->SetRenderOpacity(Has?1.f:.32f);
+        T->Badge->SetVisibility(Has?ESlateVisibility::HitTestInvisible:ESlateVisibility::Hidden);
+        // Empty reserved tiles stay focusable so their reservation tooltip remains accessible.
+        T->Button->SetIsEnabled(T->Bucket!=2);
+        T->Frame->SetBrushColor(View.WaitingForSpace?FLinearColor(.85,.4,.04):View.ReservedFor?FLinearColor(.03,.38,.85):FLinearColor(.13,.15,.17));
+        T->Button->SetBackgroundColor(View.ReservedFor?FLinearColor(.25,.5,.9):FLinearColor::White);
+        T->ReservationMark->SetText(FText::FromString(View.WaitingForSpace?TEXT("WAIT"):View.InTransit?TEXT("IN"):View.ReservedFor?TEXT("R"):TEXT("")));
+        FString Tip=Has?TF::ResourceName(R)+FString::Printf(TEXT(" x %d"),Count)+(T->Bucket==3?TEXT("\nClick to put into Incoming storage"):T->Bucket==2?TEXT("\nOnboard cargo is read-only"):TEXT("\nClick to take this stack")):TEXT("Empty slot");
+        if(View.ReservedFor)Tip+=TEXT("\nReserved for ")+TF::ResourceName(View.ReservedFor);
+        if(View.WaitingForSpace)Tip+=TEXT("\nWaiting for space: existing cargo is unchanged.");
+        if(View.InTransit)Tip+=TEXT("\nIncoming: delivery already on the way.");
+        if(T->Bucket==1&&R&&Transit.FindRef(R)>0)Tip+=FString::Printf(TEXT("\n%d additional items in transit to this floor."),Transit.FindRef(R));
+        T->Frame->SetToolTipText(FText::FromString(Tip));T->Button->SetToolTipText(FText::FromString(Tip));
     }
 }
 void UTFPanel::MoveInventory(int32 Bucket,int32 InventorySlot,TSubclassOf<UFGItemDescriptor> Expected)
@@ -224,7 +322,17 @@ void UTFPanel::MoveInventory(int32 Bucket,int32 InventorySlot,TSubclassOf<UFGIte
 }
 void UTFPanel::Build()
 {
-    if(!Body||!Header)return;Body->ClearChildren();Header->ClearChildren();Actions.Reset();Tiles.Reset();FluidBars.Reset();FluidAmounts.Reset();Resources.Reset();DestinationStops.Reset();FloorChoice=nullptr;ResourceChoice=nullptr;DestinationChoice=nullptr;Timeout=nullptr;Name=nullptr;Weight=nullptr;ReservationCount=nullptr;
+    int32 FocusAction=INDEX_NONE,FocusA=0,FocusB=0;
+    for(auto Handler:Actions)if(Handler->Button&&Handler->Button->HasKeyboardFocus()){FocusAction=Handler->Action;FocusA=Handler->A;FocusB=Handler->B;break;}
+    const bool SearchFocused=ResourceSearch&&ResourceSearch->HasKeyboardFocus();
+    const bool FloorFocused=FloorChoice&&FloorChoice->HasKeyboardFocus();
+    ON_SCOPE_EXIT
+    {
+        if(SearchFocused&&ResourceSearch)ResourceSearch->SetKeyboardFocus();
+        else if(FloorFocused&&FloorChoice)FloorChoice->SetKeyboardFocus();
+        else for(auto Handler:Actions)if(Handler->Button&&Handler->Action==FocusAction&&Handler->A==FocusA&&Handler->B==FocusB){Handler->Button->SetKeyboardFocus();break;}
+    };
+    if(!Body||!Header)return;Body->ClearChildren();Header->ClearChildren();Actions.Reset();Tiles.Reset();FluidBars.Reset();FluidAmounts.Reset();Resources.Reset();AllResources.Reset();DestinationStops.Reset();FloorChoice=nullptr;ResourceChoice=nullptr;ResourceSearch=nullptr;ResourceSummary=nullptr;DestinationChoice=nullptr;Timeout=nullptr;Name=nullptr;Weight=nullptr;ReservationCount=nullptr;
     auto* D=IsValid(Anchor)?Anchor->Drive():nullptr;
     auto* TitleRow=WidgetTree->ConstructWidget<UHorizontalBox>();Header->AddChildToVerticalBox(TitleRow);
     Text(Column(TitleRow,8),D?FString::Printf(TEXT("%s elevator  /  Mk%d"),D->IsFluid?TEXT("Fluid"):TEXT("Freight"),D->Tier):TEXT("Freight elevator"),27,FLinearColor::White);Button(Column(TitleRow,1),TEXT("Close"),0);
@@ -233,7 +341,7 @@ void UTFPanel::Build()
     SelectedFloor=FMath::Clamp(SelectedFloor,0,FMath::Max(0,D->Stops.Num()-1));
     auto* Tabs=WidgetTree->ConstructWidget<UHorizontalBox>();Header->AddChildToVerticalBox(Tabs);
     const TCHAR* Names[]={TEXT("Storage"),TEXT("Ports"),TEXT("Routes"),TEXT("Settings"),D->IsFluid?TEXT("Fluid tanks"):TEXT("Reservations")};
-    for(int32 I=0;I<5;++I){auto* B=Button(Column(Tabs),Names[I],100,I);if(Page==I)B->SetBackgroundColor(FLinearColor(.9,.4,.1));}
+    for(int32 I=0;I<5;++I)Button(Column(Tabs),Names[I],100,I);
     if(Page==0||Page==1||Page==3||(Page==4&&!D->IsFluid))
     {
         Text(Body,TEXT("Floor"),16);FloorChoice=WidgetTree->ConstructWidget<UComboBoxString>();ReadableChoices(FloorChoice);
@@ -245,7 +353,7 @@ void UTFPanel::Build()
     {
         if(!S){Text(Body,TEXT("Add a floor stop to use storage."));return;}
         auto* Views=WidgetTree->ConstructWidget<UHorizontalBox>();Body->AddChildToVerticalBox(Views);const TCHAR* Labels[]={TEXT("Incoming"),TEXT("Outgoing"),TEXT("Onboard")};
-        for(int32 I=0;I<3;++I){auto* B=Button(Column(Views),Labels[I],102,I);if(StorageView==I)B->SetBackgroundColor(FLinearColor(.9,.4,.1));}
+        for(int32 I=0;I<3;++I)Button(Column(Views),Labels[I],102,I);
         if(D->Routes.IsEmpty())Text(Body,TEXT("Add a destination in Routes to start shipping."),15,FLinearColor(1,.65,.25));
         if(D->IsFluid)
         {
@@ -255,7 +363,7 @@ void UTFPanel::Build()
         else
         {
             Text(Body,TEXT("Click a storage stack to take it. Click your inventory to put a stack into Incoming."),14);
-            if(StorageView==0&&S->ReservedIncomingStacks()>0)Text(Body,FString::Printf(TEXT("%d of %d stacks reserved. Manage guaranteed space in Reservations."),S->ReservedIncomingStacks(),FTFStats::ForTier(D->Tier).Stacks),14,FLinearColor(1,.65,.25));
+            if(StorageView!=2)Text(Body,TEXT("Blue / R: reserved   |   IN: delivery on the way   |   Amber / WAIT: waiting for space"),14,FLinearColor(.55,.75,1));
             auto* Row=WidgetTree->ConstructWidget<UHorizontalBox>();Body->AddChildToVerticalBox(Row);auto* Left=Column(Row,8);auto* Right=Column(Row,9);
             Text(Left,StorageView==0?TEXT("Incoming storage"):StorageView==1?TEXT("Outgoing storage"):TEXT("Onboard cargo (read-only)"),21);
             if(StorageView!=2)Button(Left,TEXT("Take all"),16,SelectedFloor,StorageView);else Text(Left,TEXT("Unloads at its assigned floor."),15);
@@ -269,7 +377,7 @@ void UTFPanel::Build()
     {
         if(!S)return;Text(Body,TEXT("Choose the number shown above the port."),16);
         auto* Row=WidgetTree->ConstructWidget<UHorizontalBox>();Body->AddChildToVerticalBox(Row);
-        for(int32 I=0;I<4;++I){auto* B=Button(Column(Row),FString::Printf(TEXT("%d   %s"),I+1,S->Ports[I].Input?TEXT("INPUT"):TEXT("OUTPUT")),103,I);if(SelectedPort==I)B->SetBackgroundColor(FLinearColor(.9,.4,.1));}
+        for(int32 I=0;I<4;++I)Button(Column(Row),FString::Printf(TEXT("%d   %s"),I+1,S->Ports[I].Input?TEXT("INPUT"):TEXT("OUTPUT")),103,I);
         const auto& P=S->Ports[SelectedPort];Text(Body,FString::Printf(TEXT("Port %d"),SelectedPort+1),24,FLinearColor::White);
         auto* Controls=WidgetTree->ConstructWidget<UHorizontalBox>();Body->AddChildToVerticalBox(Controls);auto* Direction=Column(Controls);auto* Filter=Column(Controls);
         Text(Direction,TEXT("Direction"),18);Button(Direction,P.Input?TEXT("INPUT  -  Change to output"):TEXT("OUTPUT  -  Change to input"),9,SelectedFloor,SelectedPort);
@@ -305,7 +413,7 @@ void UTFPanel::Build()
     {
         if(!S){Text(Body,TEXT("Add a floor stop to reserve storage."));return;}
         auto* Buffers=WidgetTree->ConstructWidget<UHorizontalBox>();Body->AddChildToVerticalBox(Buffers);
-        for(int32 N=0;N<2;++N){auto* Toggle=Button(Column(Buffers),N==0?TEXT("Incoming"):TEXT("Outgoing"),104,N);if(ReservationBuffer==N)Toggle->SetBackgroundColor(FLinearColor(.9,.4,.1));}
+        for(int32 N=0;N<2;++N)Button(Column(Buffers),N==0?TEXT("Incoming"):TEXT("Outgoing"),104,N);
         const auto& Rules=ReservationBuffer==0?S->IncomingReservations:S->OutgoingReservations;
         const int32 Capacity=FTFStats::ForTier(D->Tier).Stacks,Reserved=S->ReservedStorageStacks(ReservationBuffer);
         Text(Body,ReservationBuffer==0?TEXT("Incoming storage reservations"):TEXT("Outgoing storage reservations"),23,FLinearColor::White);
@@ -327,7 +435,7 @@ void UTFPanel::Build()
     }
     if(Page==4&&D->IsFluid)
     {
-        Text(Body,TEXT("Tank layout"),23,FLinearColor::White);auto* Row=WidgetTree->ConstructWidget<UHorizontalBox>();Body->AddChildToVerticalBox(Row);for(int32 N:{1,2,4}){auto* B=Button(Column(Row),FString::Printf(TEXT("%d tank%s"),N,N==1?TEXT(""):TEXT("s")),14,0,N);if(D->Compartments==N)B->SetBackgroundColor(FLinearColor(.9,.4,.1));}
+        Text(Body,TEXT("Tank layout"),23,FLinearColor::White);auto* Row=WidgetTree->ConstructWidget<UHorizontalBox>();Body->AddChildToVerticalBox(Row);for(int32 N:{1,2,4})Button(Column(Row),FString::Printf(TEXT("%d tank%s"),N,N==1?TEXT(""):TEXT("s")),14,0,N);
         Text(Body,TEXT("Choose a fluid, then assign its tank."),17);ResourcePicker(Body);
         for(int32 I=0;I<D->Compartments;++I)Button(Body,FString::Printf(TEXT("Tank %d: %s - Assign selected fluid"),I+1,*TF::ResourceName(D->TankResources[I])),15,0,I);
         Text(Body,TEXT("Empty the system before changing its layout. Disconnect and empty a tank's pipes before changing its fluid."),14);
@@ -335,7 +443,8 @@ void UTFPanel::Build()
 }
 void UTFPanel::Handle(int32 Action,int32 A,int32 B,TSubclassOf<UFGItemDescriptor> ResourceOverride)
 {
-    if(Action==0){Close();return;}if(Action==100){Page=A;FlushArmed=false;Build();return;}if(Action==102){StorageView=A;Build();return;}if(Action==103){SelectedPort=A;Build();return;}
+    if(Action==0){Close();return;}if(Action==100){Page=A;SearchQuery.Empty();SelectedResource=nullptr;FlushArmed=false;Build();return;}if(Action==102){StorageView=A;Build();return;}if(Action==103){SelectedPort=A;Build();return;}
+    if(Action==105){if(ResourceSearch){ResourceSearch->SetText(FText::GetEmpty());ResourceSearch->SetKeyboardFocus();}return;}
     if(Action==104){ReservationBuffer=FMath::Clamp(A,0,1);Build();return;}
     if(Action==101){SelectedFloor=A;FlushArmed=false;Build();return;}if(Action==17&&!FlushArmed){FlushArmed=true;Build();return;}
     auto* PC=Cast<AFGPlayerController>(GetOwningPlayer());auto* R=PC?PC->GetRemoteCallObjectOfClass<UTFRemoteCall>():nullptr;
@@ -348,11 +457,22 @@ void UTFPanel::Handle(int32 Action,int32 A,int32 B,TSubclassOf<UFGItemDescriptor
 void UTFPanel::NativeTick(const FGeometry& Geometry,float Delta)
 {
     Super::NativeTick(Geometry,Delta);
-    if(RebuildDelay>=0){RebuildDelay-=Delta;if(RebuildDelay<0){const auto Chosen=ChosenResource();const int32 Dest=DestinationChoice?DestinationChoice->GetSelectedIndex():0;const float Share=Weight?Weight->GetValue():1;const float Reserved=ReservationCount?ReservationCount->GetValue():1;Build();if(ResourceChoice)ResourceChoice->SetSelectedIndex(Resources.IndexOfByKey(Chosen)+1);if(DestinationChoice&&Page==2&&Dest>=0&&Dest<DestinationChoice->GetOptionCount())DestinationChoice->SetSelectedIndex(Dest);if(Weight)Weight->SetValue(Share);if(ReservationCount)ReservationCount->SetValue(Reserved);if(Message)Message->SetText(FText::FromString(PendingFeedback));}}
+    for(auto Handler:Actions)Handler->RefreshStyle();
+    if(RebuildDelay>=0){RebuildDelay-=Delta;if(RebuildDelay<0){const auto Chosen=ChosenResource();const int32 Dest=DestinationChoice?DestinationChoice->GetSelectedIndex():0;const float Share=Weight?Weight->GetValue():1;const float Reserved=ReservationCount?ReservationCount->GetValue():1;Build();if(ResourceChoice&&!FloorRebuild){SelectedResource=Chosen;FilterResources();}FloorRebuild=false;if(DestinationChoice&&Page==2&&Dest>=0&&Dest<DestinationChoice->GetOptionCount())DestinationChoice->SetSelectedIndex(Dest);if(Weight)Weight->SetValue(Share);if(ReservationCount)ReservationCount->SetValue(Reserved);if(Message)Message->SetText(FText::FromString(PendingFeedback));}}
     RefreshTimer+=Delta;if(RefreshTimer<.25f)return;RefreshTimer=0;if(!IsValid(Anchor)){Close();return;}auto* D=Anchor->Drive();if(!D||!Live)return;
     FString Status=D->Status.Left(1).ToUpper()+D->Status.RightChop(1).ToLower();Live->SetText(FText::FromString(FString::Printf(TEXT("%s   |   %.1f m   |   %s"),*Status,D->CabinHeight/100,D->Powered?TEXT("Power on"):TEXT("No power"))));RefreshStorage();
 }
-FReply UTFPanel::NativeOnKeyDown(const FGeometry& Geometry,const FKeyEvent& Event){if(Event.GetKey()==EKeys::Escape){Close();return FReply::Handled();}return Super::NativeOnKeyDown(Geometry,Event);}
+FReply UTFPanel::NativeOnKeyDown(const FGeometry& Geometry,const FKeyEvent& Event)
+{
+    if(Event.GetKey()==EKeys::Escape)
+    {
+        if(ResourceChoice&&ResourceChoice->IsOpen()){ResourceChoice->OpenResults(false);return FReply::Handled();}
+        if(ResourceSearch&&ResourceSearch->HasKeyboardFocus()&&!SearchQuery.IsEmpty()){ResourceSearch->SetText(FText::GetEmpty());return FReply::Handled();}
+        Close();return FReply::Handled();
+    }
+    if(Event.GetKey()==EKeys::Down&&ResourceSearch&&ResourceSearch->HasKeyboardFocus()&&ResourceChoice){ResourceChoice->OpenResults(true,true);return FReply::Handled();}
+    return Super::NativeOnKeyDown(Geometry,Event);
+}
 void UTFPanel::ReleaseInput()
 {
     if(!CapturedInput)return;CapturedInput=false;

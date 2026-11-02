@@ -1,0 +1,55 @@
+{
+  "version": "0.1.15",
+  "date": "2026-11-02",
+  "suites": [
+    {
+      "testDisplayName": "AutomaticShaft",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "BuildingSnap",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "BuildMenu",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "IronworksAssets",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "Motion",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "ResourceSearch",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "Specifications",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "StorageDisplay",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    }
+  ],
+  "note": "Final gameplay source; subsequent changes affect only the opt-in dedicated-server QA fixture."
+}

@@ -23,6 +23,14 @@ class UHorizontalBox;
 class UProgressBar;
 
 UCLASS()
+class TRAPPERFREIGHTELEVATORS_API UTFResourceCombo : public UComboBoxString
+{
+    GENERATED_BODY()
+public:
+    void OpenResults(bool Open, bool Focus = false);
+};
+
+UCLASS()
 class TRAPPERFREIGHTELEVATORS_API UTFRemoteCall : public UFGRemoteCallObject
 {
     GENERATED_BODY()
@@ -48,6 +56,10 @@ class TRAPPERFREIGHTELEVATORS_API UTFButtonAction : public UObject
 public:
     UPROPERTY() TObjectPtr<UTFPanel> Panel;
     UPROPERTY() TSubclassOf<UFGItemDescriptor> Resource;
+    UPROPERTY() TObjectPtr<UButton> Button;
+    bool Selected = false;
+    int32 StyleState = INDEX_NONE;
+    void RefreshStyle();
     int32 Action=0,A=0,B=0;
     UFUNCTION() void Click();
 };
@@ -60,6 +72,8 @@ public:
     UPROPERTY() TObjectPtr<UImage> Icon;
     UPROPERTY() TObjectPtr<UTextBlock> Count;
     UPROPERTY() TObjectPtr<UBorder> Badge;
+    UPROPERTY() TObjectPtr<UBorder> Frame;
+    UPROPERTY() TObjectPtr<UTextBlock> ReservationMark;
     UPROPERTY() TObjectPtr<UButton> Button;
     UPROPERTY() TObjectPtr<UTFButtonAction> Action;
     UPROPERTY() TSubclassOf<UFGItemDescriptor> ShownResource;
@@ -82,7 +96,14 @@ public:
     UPROPERTY() TArray<TObjectPtr<UTextBlock>> FluidAmounts;
     UPROPERTY() TObjectPtr<UTextBlock> Live;
     UPROPERTY() TObjectPtr<UTextBlock> Message;
-    UPROPERTY() TObjectPtr<UComboBoxString> ResourceChoice;
+    UPROPERTY() TObjectPtr<UTFResourceCombo> ResourceChoice;
+    UPROPERTY() TObjectPtr<UEditableTextBox> ResourceSearch;
+    UPROPERTY() TObjectPtr<UTextBlock> ResourceSummary;
+    UPROPERTY() TArray<TSubclassOf<UFGItemDescriptor>> AllResources;
+    UPROPERTY() TSubclassOf<UFGItemDescriptor> SelectedResource;
+    FString SearchQuery;
+    bool UpdatingResourcePicker = false;
+    bool FloorRebuild = false;
     UPROPERTY() TObjectPtr<UComboBoxString> DestinationChoice;
     UPROPERTY() TObjectPtr<USpinBox> Weight;
     UPROPERTY() TObjectPtr<USpinBox> ReservationCount;
@@ -110,6 +131,10 @@ public:
     UButton* Button(UVerticalBox* Parent,const FString& Label,int32 Action,int32 A=0,int32 B=0);
     UVerticalBox* Column(UHorizontalBox* Row,float Weight=1.f);
     void ResourcePicker(UVerticalBox* Parent,TSubclassOf<UFGItemDescriptor> Current=nullptr);
+    void FilterResources();
+    UFUNCTION() void ResourceSearchChanged(const FText& Value);
+    UFUNCTION() void ResourceChanged(FString Value,ESelectInfo::Type SelectionType);
+    UFUNCTION() UWidget* ResourceRow(FString Value);
     void InventoryGrid(UVerticalBox* Parent,int32 Bucket,int32 Slots,int32 Columns);
     void RefreshStorage();
     void MoveInventory(int32 Bucket,int32 Slot,TSubclassOf<UFGItemDescriptor> Expected);

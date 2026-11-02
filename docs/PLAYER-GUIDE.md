@@ -17,6 +17,12 @@ Complete the Freight Elevators HUB milestones: Mk.1 at tier 4, Mk.2 at tier 6, M
 
 A stop is a separate building, even when it overlaps the base visually.
 
+### Attach foundations and walls (0.1.15)
+
+Aim a flat foundation or straight 8 m wall at any of the shaft's four faces. It aligns with the tower's rotation and snaps vertically in 1 m steps. A foundation's top surface aligns with the selected height, including a floor stop's deck. Standard 1 m, 2 m and 4 m foundations and Powered Foundations are supported.
+
+Wall snaps stay above the drive controls and outside floor-stop openings. Foundation snaps skip heights that would cut across a stop's doors or ports. Ramps, angled walls and other building types retain their usual placement. Extend the shaft to add higher snap positions.
+
 ## Connect belts and pipes
 
 Open the panel using the normal Use key. Select the floor, then **Ports**.
@@ -43,6 +49,8 @@ Belts may fill incoming storage and drain outgoing storage while the cabin is el
 
 In **Routes**, choose a resource, destination floor and delivery weight. Add another destination for the same resource to divide its deliveries.
 
+In 0.1.15, type part of an item name in the search field to filter the picker immediately. Search ignores capitalization. **Clear** restores all choices; filtering never changes the selected item by itself. The selection is also shown below the picker. The same search is available in item port filters, reservations and fluid assignment. Press Down from search to navigate results. Escape dismisses the open results or clears a focused search before closing the dashboard.
+
 Example: 100 copper ingots/min for two destination floors:
 
 | Destination | Weight | Target share when both accept cargo |
@@ -65,6 +73,8 @@ For example, in a 30-slot buffer, reserving 5 for rods and 10 for plates leaves 
 Rules apply only to the selected floor and buffer. To guarantee rods can arrive at Floor 4, reserve rod stacks in **Floor 4 → Outgoing**. An incoming reservation on another floor does not reserve destination space.
 
 Changing a rule never deletes existing cargo. If storage is already full, the reserved space becomes available as items leave. Outgoing rules also account for cargo already assigned to that floor. Remove a rule or save zero to release its reservation.
+
+In 0.1.15, **Incoming** and **Outgoing** show reserved tiles first. Four reserved stacks produce four marked tiles. Blue **R** tiles show the reserved item; a faint icon means the tile is empty. **IN** means incoming delivery needs that reserved space. Amber **WAIT** means existing cargo must leave before the space is available. Hover for the item and status. This is a display order: clicking an occupied tile still takes its actual stack, and changing highlights never moves or deletes cargo.
 
 ## Pickup and fluids
 

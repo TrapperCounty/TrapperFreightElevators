@@ -1,6 +1,30 @@
 # Compatibility and validation
 
-Updated 2 November 2026 for beta 0.1.14.
+Updated 2 November 2026 for the unpublished 0.1.15 candidate. The installed/published version remains 0.1.14.
+
+## 0.1.15 enhancements
+
+Tested with Satisfactory CL 513885, SML 3.12.0 and Powered Foundations 0.1.4. No assets, inventory contents, save properties or existing buildable classes are migrated.
+
+| Check | Result |
+|---|---|
+| Editor automation | All 8 suites passed: existing 5 plus BuildingSnap, StorageDisplay and ResourceSearch |
+| Storage display | Unique, complete mapping of real inventory indices; four-slot reservations; multiple resources; partial stacks; in-flight space; full-buffer conflicts; removal and capacity bounds |
+| Search | Selection preserved when filtered out, restored when clearing search, and cleared only by explicit selection |
+| Snap geometry | All four faces, rotated towers, 1/2/4 m foundations, rectangular rotation, wall alignment, opening/control-panel exclusion, shaft-height limits and inner rail normals |
+| Windows dedicated-server transport | 107 checks passed, including native power, belts, fluids, routing and reservation accounting |
+| Native snap/placement integration | 307 checks passed on a Windows dedicated server, including all four faces of automatic and manual shafts with standard and Powered Foundations |
+| Packaging | Windows Steam/Epic, Windows Server and Linux Server candidates built successfully |
+
+The server snap fixtures call native recipe holograms, hit validation, hooked snapping and placement geometry validation on automatic and manual shaft surfaces. They test standard and optional Powered Foundations. They do not test player input, construction cost, actual construction/save/reload, or joined-client replication of the new interactions.
+
+Wall placement can retain the game's normal soft-clearance warning where it touches shaft framing. The final check verifies that these warnings allow construction; hard placement disqualifiers still fail. No clearance checks are suppressed. Earlier test-fixture failures counted the initial spawn flag and soft warnings as placement failures; the fixture now resets the reason list as native validation does, then checks placement and `CanConstruct()`.
+
+Live visual/controller navigation, in-game search input and transfers from reordered tiles still need a player-session check. Epic and Linux runtime are untested. The candidate has not been installed in the running player game or published to GitHub.
+
+Source inspection confirmed host inventories and replicated client storage snapshots retain physical indices; display tiles send the mapped index and expected item class through the existing transfer RPC. The editor SDK contains placeholder inventory constructors/getters, so editor fixtures populate serialized fields directly; the server fixture also exercises real constructors and stack sizes.
+
+Current evidence: `validation/enhancements-editor.json`, `validation/enhancements-runtime.txt` and `validation/enhancements-transport.txt`. The disposable QA server was stopped after testing; its existing save files were retained.
 
 ## 0.1.14 build-menu fix
 

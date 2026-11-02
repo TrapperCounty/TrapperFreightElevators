@@ -1,2 +1,9 @@
 #include "Modules/ModuleManager.h"
-IMPLEMENT_MODULE(FDefaultModuleImpl, TrapperFreightElevators)
+#include "TFBuildingSnap.h"
+class FTrapperFreightElevatorsModule : public IModuleInterface
+{
+public:
+    virtual void StartupModule() override { TFInstallBuildingSnaps(); }
+    virtual void ShutdownModule() override { TFRemoveBuildingSnaps(); }
+};
+IMPLEMENT_MODULE(FTrapperFreightElevatorsModule, TrapperFreightElevators)

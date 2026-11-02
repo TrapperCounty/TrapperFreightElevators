@@ -1,0 +1,308 @@
+PASS: Disposable rotated tower fixture
+PASS: Manual shaft fixture links to rotated tower
+PASS: Native recipe: /Game/FactoryGame/Recipes/Buildings/Foundations/Recipe_Foundation_8x1_01.Recipe_Foundation_8x1_01_C
+PASS: Native hologram spawned
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Moving off shaft clears freight snap state
+PASS: Native recipe: /Game/FactoryGame/Recipes/Buildings/Foundations/Recipe_Foundation_8x2_01.Recipe_Foundation_8x2_01_C
+PASS: Native hologram spawned
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Moving off shaft clears freight snap state
+PASS: Native recipe: /Game/FactoryGame/Recipes/Buildings/Foundations/Recipe_Foundation_8x4_01.Recipe_Foundation_8x4_01_C
+PASS: Native hologram spawned
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Moving off shaft clears freight snap state
+PASS: Native recipe: /Game/FactoryGame/Recipes/Buildings/Walls/Recipe_Wall_8x4_01.Recipe_Wall_8x4_01_C
+PASS: Native hologram spawned
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained): FGCDEncroachingSoftClearance
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained): FGCDEncroachingSoftClearance
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained): FGCDEncroachingSoftClearance
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained): FGCDEncroachingSoftClearance
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Moving off shaft clears freight snap state
+PASS: Native recipe: /TrapperPoweredFoundations/Recipes/Recipe_PoweredFoundation_1m.Recipe_PoweredFoundation_1m_C
+PASS: Native hologram spawned
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Moving off shaft clears freight snap state
+PASS: Native recipe: /TrapperPoweredFoundations/Recipes/Recipe_PoweredFoundation_2m.Recipe_PoweredFoundation_2m_C
+PASS: Native hologram spawned
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Moving off shaft clears freight snap state
+PASS: Native recipe: /TrapperPoweredFoundations/Recipes/Recipe_PoweredFoundation_4m.Recipe_PoweredFoundation_4m_C
+PASS: Native hologram spawned
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Native hologram accepts shaft hit
+PASS: Native TrySnapToActor hook accepts shaft face
+PASS: Runtime placement matches face and deck height
+PASS: Native snapped-building state points to targeted shaft part
+PASS: Native placement geometry permits construction (native warnings retained):
+PASS: Moving off shaft clears freight snap state
+PASS: Real item descriptor loads
+PASS: Runtime descriptor supplies actual stack size
+PASS: Real partial stack absorbs one in-flight item without another tile
+PASS: Real stack size accounts for in-flight reservation tiles
+RESULT: 307 checks, 0 failures
