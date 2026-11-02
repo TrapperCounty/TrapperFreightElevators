@@ -2,7 +2,7 @@
 
 ## Install and unlock
 
-Once the release is published, install **Trapper's Freight Elevators** through Satisfactory Mod Manager. Install the same mod version on clients and server. Make a backup before updating an important factory.
+For the GitHub beta, follow the [installation instructions](INSTALLATION.md). Satisfactory Mod Repository publication is still pending; once available there, install **Trapper's Freight Elevators** through Satisfactory Mod Manager. Install the same mod version on clients and server. Make a backup before updating an important factory.
 
 Complete the Freight Elevators HUB milestones: Mk.1 at tier 4, Mk.2 at tier 6, Mk.3 at tier 8. Search for **Freight** in the build menu.
 

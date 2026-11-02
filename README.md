@@ -2,7 +2,15 @@
 
 Move items and fluids between factory floors with an extendable freight elevator.
 
-**Release candidate: 0.1.13.** Prepared for a public beta. Requires Satisfactory build 513885 or newer and SML 3.12.0 compatible with the installed game. Gameplay validation was performed on build 513885; newer game builds are not automatically verified.
+**Beta release: 0.1.13.** Requires Satisfactory build 513885 or newer and SML 3.12.0 compatible with the installed game. Gameplay validation was performed on build 513885; newer game builds are not automatically verified.
+
+## Download the mod
+
+**[Download 0.1.13 for Windows (Steam / Epic)](https://github.com/TrapperCounty/TrapperFreightElevators/releases/download/v0.1.13/TrapperFreightElevators-0.1.13-Windows.zip)**
+
+[All downloads, dedicated-server packages and checksums](https://github.com/TrapperCounty/TrapperFreightElevators/releases/tag/v0.1.13) · [Installation instructions](docs/INSTALLATION.md)
+
+The installable mod files are attached to **Releases**. GitHub's green **Code → Download ZIP** and automatic **Source code** downloads contain this documentation repository, not the installed mod. Satisfactory Mod Repository publication is still pending.
 
 ## Features
 
@@ -29,4 +37,4 @@ Powered Foundations is optional and separate. Freight Elevators also works with 
 
 Use this repository's **Issues → New issue → Bug report**. Include the game build, mod and SML versions, single-player or server mode, reproduction steps, and relevant logs. Share saves only if you are comfortable doing so.
 
-This repository contains the public guide and issue tracker. Mod source code is not included. The downloadable mod release is still being prepared for Satisfactory Mod Repository.
+This repository contains the public guide and issue tracker, with compiled mod packages attached to Releases. Mod source code is not included.
