@@ -1,6 +1,14 @@
 # Compatibility and validation
 
-Updated 2 November 2026 for the unpublished 0.1.16 search-fix candidate.
+Updated 2 November 2026 for the unpublished 0.1.17 automatic-results candidate.
+
+## 0.1.17 automatic search results
+
+Search now renders matching rows inline in a scroll box capped at 220 Slate units, instead of automatically opening a combo popup. Nonempty queries hide the closed combo; selecting a result clears the query and returns to the full picker with that item selected. The search implementation is shared by Ports, Routes, Reservations and Fluid tanks.
+
+All 9 editor suites pass. The routed Slate keyboard regression now uses temporary Wire/Cable descriptor names (restored afterward), checks matching rows on every character without focus loss, and selects Cable through Down/Enter. It also checks replacement/backspace, no-match messages, Clear/Escape and removal of obsolete result handlers. Windows Steam/Epic packaging succeeded. Evidence: `validation/automatic-search-editor.json`.
+
+These are editor input tests, not live Satisfactory/controller or multiplayer confirmation. The manual checklist includes scrolling through many matches and checking all four dashboard contexts.
 
 ## 0.1.16 search input fix
 

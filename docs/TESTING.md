@@ -1,5 +1,12 @@
 # Tester checklist
 
+## 0.1.17 automatic results
+
+- Type `wire` in Routes or Ports. Matching rows should appear below the field from the first character and update throughout the query while the caret stays in the search field.
+- Click a match, or press Down/Enter to focus the first result and Enter to select. Verify the chosen item is correct and the inline list collapses. Typing alone must preserve the existing selection.
+- Try mixed case, select-all/replace, backspace, unmatched text and Clear/Escape. Check that unmatched searches show a message, and clearing restores the full picker.
+- Use a broad query with many matches: the list should scroll within its bounded height. Check keyboard/controller navigation to offscreen rows, then repeat in Reservations and Fluid tanks.
+
 ## 0.1.16 search regression
 
 - In Routes and Ports, type a full query such as `wire` without re-clicking the field. The query and match count should update after every character; the popup should stay closed until clicked or opened with Down/Enter.

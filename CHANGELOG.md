@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.1.17 - automatic search results (unreleased candidate)
+
+- Show a scrollable list of matching items/fluids directly below the search field as you type, without opening a popup or moving typing focus.
+- Click a result, or use Down/Enter to focus the list and Enter to select. Selecting a result closes the list and preserves the chosen item; Clear/Escape restores the full picker.
+- Apply the same behavior to Ports, Routes, Reservations and Fluid tanks.
+
 ## 0.1.16 - search input fix (unreleased candidate)
 
 - Fix issue #3: keep keyboard focus in the item/fluid search field while typing. Results and match counts update on every edit; click the list or press Down/Enter to open the filtered results, then select an item normally.

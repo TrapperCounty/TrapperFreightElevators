@@ -1,0 +1,74 @@
+{
+  "version": "0.1.17",
+  "date": "2026-11-02",
+  "succeeded": 9,
+  "failed": 0,
+  "suites": [
+    {
+      "testDisplayName": "AutomaticShaft",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "BuildingSnap",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "BuildMenu",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "IronworksAssets",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "Motion",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "ResourceSearch",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "ResourceSearchTyping",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "Specifications",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "StorageDisplay",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    }
+  ],
+  "coverage": [
+    "Automatic inline matching list after each character",
+    "Mixed-case typing without focus loss or popup creation",
+    "Selected resource preserved while filtering",
+    "Select-all/replace and backspace",
+    "No-match message, Clear and Escape",
+    "Obsolete result handlers removed",
+    "Down focuses matching row; Enter selects Cable and returns typing focus"
+  ],
+  "limits": [
+    "No live Satisfactory UI/controller or multiplayer confirmation"
+  ]
+}
