@@ -1,6 +1,12 @@
 # Compatibility and validation
 
-Updated 2 November 2026 for beta 0.1.14.
+Updated 2 November 2026 for beta 0.1.17.
+
+## 0.1.17 dashboard and search update
+
+All 9 editor suites pass. Windows Steam/Epic, Windows Server and Linux Server packages built successfully. The installed Windows client matches the tested package, and the owner confirmed the automatic search results look good in game.
+
+This release also includes the 0.1.15 shaft snapping, darker dashboard focus and reserved-slot display enhancements. Full controller, all-context, joined-client, Epic and Linux runtime checks remain pending. The 307 native snap/display checks and 107 transport checks belong to the 0.1.15 candidate; they were not rerun for these UI-only search changes. See [current validation](VALIDATION.md).
 
 ## 0.1.14 build-menu fix
 

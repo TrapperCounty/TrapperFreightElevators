@@ -1,6 +1,6 @@
 # Compatibility and validation
 
-Updated 2 November 2026 for the unpublished 0.1.17 automatic-results candidate.
+Updated 2 November 2026 for beta 0.1.17.
 
 ## 0.1.17 automatic search results
 
@@ -8,7 +8,7 @@ Search now renders matching rows inline in a scroll box capped at 220 Slate unit
 
 All 9 editor suites pass. The routed Slate keyboard regression now uses temporary Wire/Cable descriptor names (restored afterward), checks matching rows on every character without focus loss, and selects Cable through Down/Enter. It also checks replacement/backspace, no-match messages, Clear/Escape and removal of obsolete result handlers. Windows Steam/Epic packaging succeeded. Evidence: `validation/automatic-search-editor.json`.
 
-These are editor input tests, not live Satisfactory/controller or multiplayer confirmation. The manual checklist includes scrolling through many matches and checking all four dashboard contexts.
+The Windows package was installed with all 10 files hash-verified, and the owner confirmed the updated search looks good in game. Windows Server and Linux Server packages were also built for this release. Full controller, all-context, Epic and multiplayer runtime confirmation remain pending; server packaging is not a fresh server gameplay test.
 
 ## 0.1.16 search input fix
 
@@ -16,7 +16,7 @@ Issue #3 is addressed by keeping the results popup closed during typing, explici
 
 All 9 editor suites pass, including a new Slate input regression. It sends character and key events through a host that forwards preview/bubble events to the panel, exercising mixed-case multi-character typing, select-all/replace, backspace, Clear, Escape, selection preservation and Down/Enter popup activation. The initial regression against 0.1.15 failed on popup auto-opening and Clear leaving stale filtering/selection indices. Evidence: `validation/search-input-editor.json`.
 
-Windows Steam/Epic client packaging succeeded. No save format, assets, transport rules or RPCs changed. No fresh server-runtime, multiplayer or live Satisfactory UI/controller test was performed. The fix has not been installed into the running player game; use the 0.1.16 checklist in [TESTING.md](TESTING.md) for that confirmation.
+Windows Steam/Epic client packaging succeeded. No save format, assets, transport rules or RPCs changed. This historical candidate validation preceded the installation and player confirmation recorded under 0.1.17 above.
 
 ## 0.1.15 enhancements
 

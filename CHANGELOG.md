@@ -1,26 +1,26 @@
 # Release notes
 
-## 0.1.17 - automatic search results (unreleased candidate)
+## 0.1.17 - automatic search results (2 November 2026)
 
 - Show a scrollable list of matching items/fluids directly below the search field as you type, without opening a popup or moving typing focus.
 - Click a result, or use Down/Enter to focus the list and Enter to select. Selecting a result closes the list and preserves the chosen item; Clear/Escape restores the full picker.
 - Apply the same behavior to Ports, Routes, Reservations and Fluid tanks.
 
-## 0.1.16 - search input fix (unreleased candidate)
+## 0.1.16 - search input fix (included in 0.1.17)
 
 - Fix issue #3: keep keyboard focus in the item/fluid search field while typing. Results and match counts update on every edit; click the list or press Down/Enter to open the filtered results, then select an item normally.
 - Give search text a dark background with explicit white text in both normal and focused states and an amber focus outline.
 - Make Clear and Escape reset both the visible query and the filtered list without losing the selected item.
 - Add a Slate keyboard regression covering continuous typing, backspace, clearing, selection preservation and explicit popup activation.
 
-## 0.1.15 - dashboard and shaft snapping (unreleased candidate)
+## 0.1.15 - dashboard and shaft snapping (included in 0.1.17)
 
 - Snap flat foundations and straight 8 m walls to all four shaft faces on a 1 m height grid. Foundation tops align to landing heights; snapping leaves stop openings and the drive controls clear. Rotated towers and Powered Foundations use the same alignment.
 - Darker dashboard selected, hover and pressed states, with a visible keyboard/controller focus outline.
 - Blue reserved slots in both storage buffers, faint item icons for empty reservations, and amber WAIT markers where existing cargo still occupies the allocation. Displayed stacks retain their original transfer targets.
 - Type to filter the shared item/fluid picker in Ports, Routes, Reservations and Fluid tanks. Search preserves the selected item, including when it is filtered out. Clear restores the full list.
 
-No saved inventory, routing rules or buildable classes are migrated. This candidate has not been published. See [validation](docs/VALIDATION.md) for test coverage.
+No saved inventory, routing rules or buildable classes are migrated. These enhancements are included in 0.1.17. See [validation](docs/VALIDATION.md) for test coverage.
 
 ## 0.1.14 - build-menu category fix
 

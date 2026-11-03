@@ -2,15 +2,15 @@
 
 Move items and fluids between factory floors with an extendable freight elevator.
 
-**Beta release: 0.1.14.** Requires Satisfactory build 513885 or newer and SML 3.12.0 compatible with the installed game. Gameplay validation was performed on build 513885; newer game builds are not automatically verified.
+**Beta release: 0.1.17.** Requires Satisfactory build 513885 or newer and SML 3.12.0 compatible with the installed game. Gameplay validation was performed on build 513885; newer game builds are not automatically verified.
 
-This branch contains the unreleased **0.1.15 candidate**: shaft snapping for foundations/walls, clearer dashboard focus, reserved-slot highlights and searchable item pickers. The download links below still point to the published 0.1.14 release.
+Includes shaft snapping for foundations/walls, clearer dashboard focus, reserved-slot highlights, and item/fluid search with automatic matching results that keep typing focus in the field.
 
 ## Download the mod
 
-**[Download 0.1.14 for Windows (Steam / Epic)](https://github.com/TrapperCounty/TrapperFreightElevators/releases/download/v0.1.14/TrapperFreightElevators-0.1.14-Windows.zip)**
+**[Download 0.1.17 for Windows (Steam / Epic)](https://github.com/TrapperCounty/TrapperFreightElevators/releases/download/v0.1.17/TrapperFreightElevators-0.1.17-Windows.zip)**
 
-[All downloads, dedicated-server packages and checksums](https://github.com/TrapperCounty/TrapperFreightElevators/releases/tag/v0.1.14) · [Installation instructions](docs/INSTALLATION.md)
+[All downloads, dedicated-server packages and checksums](https://github.com/TrapperCounty/TrapperFreightElevators/releases/tag/v0.1.17) · [Installation instructions](docs/INSTALLATION.md)
 
 The installable mod files are attached to **Releases**. GitHub's green **Code → Download ZIP** and automatic **Source code** downloads contain development files, not the installed mod. Satisfactory Mod Repository publication is still pending.
 
