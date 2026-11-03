@@ -200,7 +200,15 @@ void UTFPanel::ResourcePicker(UVerticalBox* Parent,TSubclassOf<UFGItemDescriptor
 {
     auto* D=Anchor->Drive();SelectedResource=Current;
     auto* SearchRow=WidgetTree->ConstructWidget<UHorizontalBox>();Parent->AddChildToVerticalBox(SearchRow);
-    ResourceSearch=WidgetTree->ConstructWidget<UEditableTextBox>();ResourceSearch->SetForegroundColor(FLinearColor::Black);ResourceSearch->SetHintText(FText::FromString(D->IsFluid?TEXT("Search fluids..."):TEXT("Search items...")));
+    ResourceSearch=WidgetTree->ConstructWidget<UEditableTextBox>();
+    auto& SearchStyle=ResourceSearch->WidgetStyle;
+    SearchStyle.SetBackgroundImageNormal(FSlateRoundedBoxBrush(FLinearColor(.045,.055,.065),3.f));
+    SearchStyle.SetBackgroundImageHovered(FSlateRoundedBoxBrush(FLinearColor(.045,.055,.065),3.f,FLinearColor(.45,.55,.65),1.f));
+    SearchStyle.SetBackgroundImageFocused(FSlateRoundedBoxBrush(FLinearColor(.045,.055,.065),3.f,FLinearColor(.95,.73,.35),2.f));
+    SearchStyle.SetForegroundColor(FLinearColor::White);SearchStyle.SetFocusedForegroundColor(FLinearColor::White);
+    SearchStyle.TextStyle.SetColorAndOpacity(FSlateColor::UseForeground());
+    ResourceSearch->SetHintText(FText::FromString(D->IsFluid?TEXT("Search fluids..."):TEXT("Search items...")));
+    ResourceSearch->SetToolTipText(FText::FromString(TEXT("Type to filter, then click the item list or press Down to choose a result.")));
     ResourceSearch->SetText(FText::FromString(SearchQuery));ResourceSearch->OnTextChanged.AddDynamic(this,&UTFPanel::ResourceSearchChanged);
     Column(SearchRow,5)->AddChildToVerticalBox(ResourceSearch);Button(Column(SearchRow,1),TEXT("Clear"),105);
     ResourceChoice=WidgetTree->ConstructWidget<UTFResourceCombo>();ReadableChoices(ResourceChoice);
@@ -233,7 +241,21 @@ void UTFPanel::FilterResources()
     ResourceSummary->SetText(FText::FromString((Resources.IsEmpty()?FString(TEXT("No matching items. ")):FString::Printf(TEXT("%d matches. "),Resources.Num()))+(SelectedResource?TEXT("Selected: ")+TF::ResourceName(SelectedResource):TEXT(""))));
     UpdatingResourcePicker=false;
 }
-void UTFPanel::ResourceSearchChanged(const FText& Value){SearchQuery=Value.ToString().TrimStartAndEnd();FilterResources();if(ResourceChoice)ResourceChoice->OpenResults(!SearchQuery.IsEmpty());}
+void UTFPanel::ResourceSearchChanged(const FText& Value)
+{
+    // A combo popup is an input menu, not an autocomplete overlay. Opening it
+    // from OnTextChanged interrupts editing in the game (issue #3). Keep typing
+    // in the field; the list/count update live and click/Down opens the results.
+    SearchQuery=Value.ToString().TrimStartAndEnd();FilterResources();
+}
+void UTFPanel::ClearResourceSearch()
+{
+    if(ResourceChoice)ResourceChoice->OpenResults(false);
+    if(ResourceSearch)ResourceSearch->SetText(FText::GetEmpty());
+    // Programmatic SetText does not guarantee an OnTextChanged notification.
+    SearchQuery.Empty();FilterResources();
+    if(ResourceSearch)ResourceSearch->SetKeyboardFocus();
+}
 void UTFPanel::ResourceChanged(FString,ESelectInfo::Type)
 {
     if(UpdatingResourcePicker||!ResourceChoice)return;
@@ -444,7 +466,7 @@ void UTFPanel::Build()
 void UTFPanel::Handle(int32 Action,int32 A,int32 B,TSubclassOf<UFGItemDescriptor> ResourceOverride)
 {
     if(Action==0){Close();return;}if(Action==100){Page=A;SearchQuery.Empty();SelectedResource=nullptr;FlushArmed=false;Build();return;}if(Action==102){StorageView=A;Build();return;}if(Action==103){SelectedPort=A;Build();return;}
-    if(Action==105){if(ResourceSearch){ResourceSearch->SetText(FText::GetEmpty());ResourceSearch->SetKeyboardFocus();}return;}
+    if(Action==105){ClearResourceSearch();return;}
     if(Action==104){ReservationBuffer=FMath::Clamp(A,0,1);Build();return;}
     if(Action==101){SelectedFloor=A;FlushArmed=false;Build();return;}if(Action==17&&!FlushArmed){FlushArmed=true;Build();return;}
     auto* PC=Cast<AFGPlayerController>(GetOwningPlayer());auto* R=PC?PC->GetRemoteCallObjectOfClass<UTFRemoteCall>():nullptr;
@@ -462,15 +484,26 @@ void UTFPanel::NativeTick(const FGeometry& Geometry,float Delta)
     RefreshTimer+=Delta;if(RefreshTimer<.25f)return;RefreshTimer=0;if(!IsValid(Anchor)){Close();return;}auto* D=Anchor->Drive();if(!D||!Live)return;
     FString Status=D->Status.Left(1).ToUpper()+D->Status.RightChop(1).ToLower();Live->SetText(FText::FromString(FString::Printf(TEXT("%s   |   %.1f m   |   %s"),*Status,D->CabinHeight/100,D->Powered?TEXT("Power on"):TEXT("No power"))));RefreshStorage();
 }
+FReply UTFPanel::NativeOnPreviewKeyDown(const FGeometry& Geometry,const FKeyEvent& Event)
+{
+    // Editable text consumes navigation and Escape before bubbling OnKeyDown.
+    if((Event.GetKey()==EKeys::Down||Event.GetKey()==EKeys::Enter)&&ResourceSearch&&ResourceSearch->HasKeyboardFocus()&&ResourceChoice)
+    {
+        ResourceChoice->OpenResults(true,true);return FReply::Handled();
+    }
+    if(Event.GetKey()==EKeys::Escape&&ResourceSearch&&ResourceSearch->HasKeyboardFocus()&&!ResourceSearch->GetText().IsEmpty())
+    {
+        ClearResourceSearch();return FReply::Handled();
+    }
+    return Super::NativeOnPreviewKeyDown(Geometry,Event);
+}
 FReply UTFPanel::NativeOnKeyDown(const FGeometry& Geometry,const FKeyEvent& Event)
 {
     if(Event.GetKey()==EKeys::Escape)
     {
         if(ResourceChoice&&ResourceChoice->IsOpen()){ResourceChoice->OpenResults(false);return FReply::Handled();}
-        if(ResourceSearch&&ResourceSearch->HasKeyboardFocus()&&!SearchQuery.IsEmpty()){ResourceSearch->SetText(FText::GetEmpty());return FReply::Handled();}
         Close();return FReply::Handled();
     }
-    if(Event.GetKey()==EKeys::Down&&ResourceSearch&&ResourceSearch->HasKeyboardFocus()&&ResourceChoice){ResourceChoice->OpenResults(true,true);return FReply::Handled();}
     return Super::NativeOnKeyDown(Geometry,Event);
 }
 void UTFPanel::ReleaseInput()

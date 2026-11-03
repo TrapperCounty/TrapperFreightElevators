@@ -1,0 +1,75 @@
+{
+  "version": "0.1.16",
+  "date": "2026-11-02",
+  "succeeded": 9,
+  "failed": 0,
+  "suites": [
+    {
+      "testDisplayName": "AutomaticShaft",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "BuildingSnap",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "BuildMenu",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "IronworksAssets",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "Motion",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "ResourceSearch",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "ResourceSearchTyping",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "Specifications",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "testDisplayName": "StorageDisplay",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    }
+  ],
+  "regressionBaseline": {
+    "version": "0.1.15",
+    "result": "Failed",
+    "failures": [
+      "Popup opened during every character edit",
+      "Clear left the query active",
+      "Clear did not restore options or the selected index"
+    ]
+  },
+  "limits": [
+    "Slate editor input regression, not a live Satisfactory gameplay test",
+    "Windows client packaging only; no new server runtime or multiplayer test"
+  ]
+}

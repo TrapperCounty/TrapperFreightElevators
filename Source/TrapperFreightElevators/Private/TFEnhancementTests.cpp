@@ -5,6 +5,10 @@
 #include "Resources/FGBuildingDescriptor.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/TextBlock.h"
+#include "Components/EditableTextBox.h"
+#include "Framework/Application/SlateApplication.h"
+#include "Widgets/SWindow.h"
+#include "Widgets/SBoxPanel.h"
 #include "UObject/UnrealType.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -108,6 +112,72 @@ bool FTFResourceSearchTest::RunTest(const FString&)
     TestEqual(TEXT("Clearing search restores selected option"),Panel->ResourceChoice->GetSelectedIndex(),1);
     Panel->ResourceChoice->SetSelectedIndex(0);Panel->ResourceChanged(TEXT("Any item"),ESelectInfo::Direct);
     TestFalse(TEXT("Explicit Any item clears selected resource"),bool(Panel->ChosenResource()));
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FTFResourceSearchTypingTest,"TrapperFreightElevators.ResourceSearchTyping",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+// Preserve Slate's tunnel/bubble routing without requiring a live game world.
+class STFSearchTestHost : public SCompoundWidget
+{
+public:
+    SLATE_BEGIN_ARGS(STFSearchTestHost) {} SLATE_DEFAULT_SLOT(FArguments,Content) SLATE_END_ARGS()
+    UTFPanel* Panel=nullptr;
+    void Construct(const FArguments& Args,UTFPanel* InPanel){Panel=InPanel;ChildSlot[Args._Content.Widget];}
+    virtual FReply OnPreviewKeyDown(const FGeometry& Geometry,const FKeyEvent& Event) override{return Panel->NativeOnPreviewKeyDown(Geometry,Event);}
+    virtual FReply OnKeyDown(const FGeometry& Geometry,const FKeyEvent& Event) override{return Panel->NativeOnKeyDown(Geometry,Event);}
+};
+bool FTFResourceSearchTypingTest::RunTest(const FString&)
+{
+    // Route real character/key events through Slate. Calling the filter directly
+    // cannot catch a popup interrupting the next character (issue #3).
+    auto* Panel=NewObject<UTFPanel>();Panel->AddToRoot();Panel->WidgetTree=NewObject<UWidgetTree>(Panel);
+    Panel->ResourceSearch=Panel->WidgetTree->ConstructWidget<UEditableTextBox>();
+    Panel->ResourceSearch->OnTextChanged.AddDynamic(Panel,&UTFPanel::ResourceSearchChanged);
+    Panel->ResourceChoice=Panel->WidgetTree->ConstructWidget<UTFResourceCombo>();
+    Panel->ResourceChoice->OnSelectionChanged.AddDynamic(Panel,&UTFPanel::ResourceChanged);
+    Panel->ResourceSummary=Panel->WidgetTree->ConstructWidget<UTextBlock>();
+    const TSubclassOf<UFGItemDescriptor> Resource=UFGItemDescriptor::StaticClass();
+    Panel->AllResources={Resource};Panel->SelectedResource=Resource;
+    auto Window=SNew(SWindow).ClientSize(FVector2D(500,200)).CreateTitleBar(false).SupportsMaximize(false).SupportsMinimize(false);
+    Window->SetContent(SNew(STFSearchTestHost,Panel)[SNew(SVerticalBox)
+        +SVerticalBox::Slot().AutoHeight()[Panel->ResourceSearch->TakeWidget()]
+        +SVerticalBox::Slot().AutoHeight()[Panel->ResourceChoice->TakeWidget()]]);
+    auto& Slate=FSlateApplication::Get();Slate.AddWindow(Window,false);Window->SlatePrepass();
+    Panel->FilterResources();Panel->ResourceSearch->SetKeyboardFocus();
+    TestTrue(TEXT("Search receives keyboard focus"),Panel->ResourceSearch->HasKeyboardFocus());
+    FString Typed;
+    for(TCHAR Character:FString(TEXT("WiRe")))
+    {
+        Slate.ProcessKeyCharEvent(FCharacterEvent(Character,FModifierKeysState(),0,false));Typed.AppendChar(Character);
+        TestEqual(TEXT("Every character reaches the search field"),Panel->ResourceSearch->GetText().ToString(),Typed);
+        TestEqual(TEXT("Every character updates the query"),Panel->SearchQuery,Typed);
+        TestTrue(TEXT("Typing retains search focus"),Panel->ResourceSearch->HasKeyboardFocus());
+        TestFalse(TEXT("Typing does not open a modal results popup"),Panel->ResourceChoice->IsOpen());
+        TestEqual(TEXT("Typing does not change the chosen resource"),Panel->ChosenResource(),Resource);
+    }
+    Slate.ProcessKeyDownEvent(FKeyEvent(EKeys::A,FModifierKeysState(false,false,true,false,false,false,false,false,false),0,false,0,0));
+    for(TCHAR Character:FString(TEXT("cable")))Slate.ProcessKeyCharEvent(FCharacterEvent(Character,FModifierKeysState(),0,false));
+    TestEqual(TEXT("Select all and replace accepts a complete new query"),Panel->SearchQuery,FString(TEXT("cable")));
+    Slate.ProcessKeyCharEvent(FCharacterEvent(TCHAR('\b'),FModifierKeysState(),0,false));
+    TestEqual(TEXT("Backspace edits the full query"),Panel->SearchQuery,FString(TEXT("cabl")));
+    Panel->Handle(105,0,0);
+    TestTrue(TEXT("Clear empties the field"),Panel->ResourceSearch->GetText().IsEmpty());
+    TestTrue(TEXT("Clear empties the query"),Panel->SearchQuery.IsEmpty());
+    TestTrue(TEXT("Clear returns focus to search"),Panel->ResourceSearch->HasKeyboardFocus());
+    TestEqual(TEXT("Clear restores all resources"),Panel->ResourceChoice->GetOptionCount(),2);
+    TestEqual(TEXT("Clear restores the selection"),Panel->ResourceChoice->GetSelectedIndex(),1);
+    Slate.ProcessKeyCharEvent(FCharacterEvent(TCHAR('x'),FModifierKeysState(),0,false));
+    Slate.ProcessKeyDownEvent(FKeyEvent(EKeys::Escape,FModifierKeysState(),0,false,0,0));
+    TestTrue(TEXT("Escape clears the field and query"),Panel->ResourceSearch->GetText().IsEmpty()&&Panel->SearchQuery.IsEmpty());
+    TestEqual(TEXT("Escape restores all results"),Panel->ResourceChoice->GetOptionCount(),2);
+    Slate.ProcessKeyDownEvent(FKeyEvent(EKeys::Down,FModifierKeysState(),0,false,0,0));
+    TestTrue(TEXT("Explicit activation still opens results"),Panel->ResourceChoice->IsOpen());
+    Panel->ResourceChoice->OpenResults(false);
+    Panel->ResourceSearch->SetKeyboardFocus();
+    Slate.ProcessKeyDownEvent(FKeyEvent(EKeys::Enter,FModifierKeysState(),0,false,0,0));
+    TestTrue(TEXT("Enter opens results before the text box consumes it"),Panel->ResourceChoice->IsOpen());
+    Panel->ResourceChoice->OpenResults(false);
+    Slate.RequestDestroyWindow(Window);Panel->RemoveFromRoot();
     return true;
 }
 #endif
