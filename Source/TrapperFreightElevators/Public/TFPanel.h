@@ -21,6 +21,8 @@ class UImage;
 class UBorder;
 class UHorizontalBox;
 class UProgressBar;
+class USizeBox;
+class UScrollBox;
 
 UCLASS()
 class TRAPPERFREIGHTELEVATORS_API UTFResourceCombo : public UComboBoxString
@@ -99,6 +101,10 @@ public:
     UPROPERTY() TObjectPtr<UTFResourceCombo> ResourceChoice;
     UPROPERTY() TObjectPtr<UEditableTextBox> ResourceSearch;
     UPROPERTY() TObjectPtr<UTextBlock> ResourceSummary;
+    UPROPERTY() TObjectPtr<USizeBox> ResourceResults;
+    UPROPERTY() TObjectPtr<UScrollBox> ResourceResultsScroll;
+    UPROPERTY() TObjectPtr<UVerticalBox> ResourceResultRows;
+    UPROPERTY() TArray<TObjectPtr<UTFButtonAction>> ResourceResultActions;
     UPROPERTY() TArray<TSubclassOf<UFGItemDescriptor>> AllResources;
     UPROPERTY() TSubclassOf<UFGItemDescriptor> SelectedResource;
     FString SearchQuery;
@@ -133,6 +139,8 @@ public:
     UVerticalBox* Column(UHorizontalBox* Row,float Weight=1.f);
     void ResourcePicker(UVerticalBox* Parent,TSubclassOf<UFGItemDescriptor> Current=nullptr);
     void FilterResources();
+    void CreateResourceResults(UVerticalBox* Parent);
+    void RefreshResourceResults();
     void ClearResourceSearch();
     UFUNCTION() void ResourceSearchChanged(const FText& Value);
     UFUNCTION() void ResourceChanged(FString Value,ESelectInfo::Type SelectionType);

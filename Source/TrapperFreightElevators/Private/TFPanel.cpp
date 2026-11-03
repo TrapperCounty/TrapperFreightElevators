@@ -208,7 +208,7 @@ void UTFPanel::ResourcePicker(UVerticalBox* Parent,TSubclassOf<UFGItemDescriptor
     SearchStyle.SetForegroundColor(FLinearColor::White);SearchStyle.SetFocusedForegroundColor(FLinearColor::White);
     SearchStyle.TextStyle.SetColorAndOpacity(FSlateColor::UseForeground());
     ResourceSearch->SetHintText(FText::FromString(D->IsFluid?TEXT("Search fluids..."):TEXT("Search items...")));
-    ResourceSearch->SetToolTipText(FText::FromString(TEXT("Type to filter, then click the item list or press Down to choose a result.")));
+    ResourceSearch->SetToolTipText(FText::FromString(TEXT("Matching items appear below as you type. Click a match, or press Down/Enter to move into the results.")));
     ResourceSearch->SetText(FText::FromString(SearchQuery));ResourceSearch->OnTextChanged.AddDynamic(this,&UTFPanel::ResourceSearchChanged);
     Column(SearchRow,5)->AddChildToVerticalBox(ResourceSearch);Button(Column(SearchRow,1),TEXT("Clear"),105);
     ResourceChoice=WidgetTree->ConstructWidget<UTFResourceCombo>();ReadableChoices(ResourceChoice);
@@ -221,7 +221,37 @@ void UTFPanel::ResourcePicker(UVerticalBox* Parent,TSubclassOf<UFGItemDescriptor
     ResourceChoice->OnSelectionChanged.AddDynamic(this,&UTFPanel::ResourceChanged);
     if(auto* RM=AFGRecipeManager::Get(GetWorld()))for(auto R:RM->GetAllItemDescriptors())if(R&&UFGItemDescriptor::GetForm(R)==(D->IsFluid?EResourceForm::RF_LIQUID:EResourceForm::RF_SOLID))AllResources.AddUnique(R);
     AllResources.Sort([](const TSubclassOf<UFGItemDescriptor>& A,const TSubclassOf<UFGItemDescriptor>& B){return TF::ResourceName(A)<TF::ResourceName(B);});
-    Parent->AddChildToVerticalBox(ResourceChoice)->SetPadding(FMargin(0,6));ResourceSummary=Text(Parent,TEXT(""),14);FilterResources();
+    Parent->AddChildToVerticalBox(ResourceChoice)->SetPadding(FMargin(0,6));
+    CreateResourceResults(Parent);ResourceSummary=Text(Parent,TEXT(""),14);FilterResources();
+}
+void UTFPanel::CreateResourceResults(UVerticalBox* Parent)
+{
+    // Inline content participates in normal layout/input; it never pushes a Slate menu.
+    ResourceResults=WidgetTree->ConstructWidget<USizeBox>();ResourceResults->SetMaxDesiredHeight(220);
+    Parent->AddChildToVerticalBox(ResourceResults)->SetPadding(FMargin(0,6));
+    ResourceResultsScroll=WidgetTree->ConstructWidget<UScrollBox>();ResourceResults->AddChild(ResourceResultsScroll);
+    ResourceResultsScroll->SetScrollWhenFocusChanges(EScrollWhenFocusChanges::InstantScroll);
+    ResourceResultRows=WidgetTree->ConstructWidget<UVerticalBox>();ResourceResultsScroll->AddChild(ResourceResultRows);
+    ResourceResults->SetVisibility(ESlateVisibility::Collapsed);
+}
+void UTFPanel::RefreshResourceResults()
+{
+    if(!ResourceResults||!ResourceResultRows||!ResourceChoice)return;
+    for(auto Handler:ResourceResultActions)Actions.RemoveSingle(Handler);
+    ResourceResultActions.Reset();ResourceResultRows->ClearChildren();
+    const bool Searching=!SearchQuery.IsEmpty();
+    ResourceResults->SetVisibility(Searching?ESlateVisibility::Visible:ESlateVisibility::Collapsed);
+    ResourceChoice->SetVisibility(Searching?ESlateVisibility::Collapsed:ESlateVisibility::Visible);
+    if(!Searching)return;
+    ResourceResultsScroll->ScrollToStart();
+    for(int32 I=0;I<Resources.Num();++I)
+    {
+        auto* Result=Button(ResourceResultRows,TEXT(""),106,I);
+        auto* Handler=Actions.Last().Get();Handler->Resource=Resources[I];ResourceResultActions.Add(Handler);
+        Result->ClearChildren();Result->AddChild(ResourceRow(ResourceChoice->GetOptionAtIndex(I+1)));
+        Handler->Selected=Resources[I]==SelectedResource;Handler->RefreshStyle();
+    }
+    if(Resources.IsEmpty())Text(ResourceResultRows,TEXT("No matching items."),16);
 }
 void UTFPanel::FilterResources()
 {
@@ -240,12 +270,11 @@ void UTFPanel::FilterResources()
     if(SelectedResource&&Index==INDEX_NONE)ResourceChoice->ClearSelection();else ResourceChoice->SetSelectedIndex(Index+1);
     ResourceSummary->SetText(FText::FromString((Resources.IsEmpty()?FString(TEXT("No matching items. ")):FString::Printf(TEXT("%d matches. "),Resources.Num()))+(SelectedResource?TEXT("Selected: ")+TF::ResourceName(SelectedResource):TEXT(""))));
     UpdatingResourcePicker=false;
+    RefreshResourceResults();
 }
 void UTFPanel::ResourceSearchChanged(const FText& Value)
 {
-    // A combo popup is an input menu, not an autocomplete overlay. Opening it
-    // from OnTextChanged interrupts editing in the game (issue #3). Keep typing
-    // in the field; the list/count update live and click/Down opens the results.
+    // Refresh inline results without opening a menu or moving the typing focus.
     SearchQuery=Value.ToString().TrimStartAndEnd();FilterResources();
 }
 void UTFPanel::ClearResourceSearch()
@@ -354,7 +383,7 @@ void UTFPanel::Build()
         else if(FloorFocused&&FloorChoice)FloorChoice->SetKeyboardFocus();
         else for(auto Handler:Actions)if(Handler->Button&&Handler->Action==FocusAction&&Handler->A==FocusA&&Handler->B==FocusB){Handler->Button->SetKeyboardFocus();break;}
     };
-    if(!Body||!Header)return;Body->ClearChildren();Header->ClearChildren();Actions.Reset();Tiles.Reset();FluidBars.Reset();FluidAmounts.Reset();Resources.Reset();AllResources.Reset();DestinationStops.Reset();FloorChoice=nullptr;ResourceChoice=nullptr;ResourceSearch=nullptr;ResourceSummary=nullptr;DestinationChoice=nullptr;Timeout=nullptr;Name=nullptr;Weight=nullptr;ReservationCount=nullptr;
+    if(!Body||!Header)return;Body->ClearChildren();Header->ClearChildren();Actions.Reset();ResourceResultActions.Reset();ResourceResults=nullptr;ResourceResultsScroll=nullptr;ResourceResultRows=nullptr;Tiles.Reset();FluidBars.Reset();FluidAmounts.Reset();Resources.Reset();AllResources.Reset();DestinationStops.Reset();FloorChoice=nullptr;ResourceChoice=nullptr;ResourceSearch=nullptr;ResourceSummary=nullptr;DestinationChoice=nullptr;Timeout=nullptr;Name=nullptr;Weight=nullptr;ReservationCount=nullptr;
     auto* D=IsValid(Anchor)?Anchor->Drive():nullptr;
     auto* TitleRow=WidgetTree->ConstructWidget<UHorizontalBox>();Header->AddChildToVerticalBox(TitleRow);
     Text(Column(TitleRow,8),D?FString::Printf(TEXT("%s elevator  /  Mk%d"),D->IsFluid?TEXT("Fluid"):TEXT("Freight"),D->Tier):TEXT("Freight elevator"),27,FLinearColor::White);Button(Column(TitleRow,1),TEXT("Close"),0);
@@ -467,6 +496,7 @@ void UTFPanel::Handle(int32 Action,int32 A,int32 B,TSubclassOf<UFGItemDescriptor
 {
     if(Action==0){Close();return;}if(Action==100){Page=A;SearchQuery.Empty();SelectedResource=nullptr;FlushArmed=false;Build();return;}if(Action==102){StorageView=A;Build();return;}if(Action==103){SelectedPort=A;Build();return;}
     if(Action==105){ClearResourceSearch();return;}
+    if(Action==106){if(ResourceOverride&&Resources.Contains(ResourceOverride)){SelectedResource=ResourceOverride;ClearResourceSearch();}return;}
     if(Action==104){ReservationBuffer=FMath::Clamp(A,0,1);Build();return;}
     if(Action==101){SelectedFloor=A;FlushArmed=false;Build();return;}if(Action==17&&!FlushArmed){FlushArmed=true;Build();return;}
     auto* PC=Cast<AFGPlayerController>(GetOwningPlayer());auto* R=PC?PC->GetRemoteCallObjectOfClass<UTFRemoteCall>():nullptr;
@@ -489,9 +519,15 @@ FReply UTFPanel::NativeOnPreviewKeyDown(const FGeometry& Geometry,const FKeyEven
     // Editable text consumes navigation and Escape before bubbling OnKeyDown.
     if((Event.GetKey()==EKeys::Down||Event.GetKey()==EKeys::Enter)&&ResourceSearch&&ResourceSearch->HasKeyboardFocus()&&ResourceChoice)
     {
+        if(!SearchQuery.IsEmpty()&&ResourceResults)
+        {
+            if(!ResourceResultActions.IsEmpty())ResourceResultActions[0]->Button->SetKeyboardFocus();
+            return FReply::Handled();
+        }
         ResourceChoice->OpenResults(true,true);return FReply::Handled();
     }
-    if(Event.GetKey()==EKeys::Escape&&ResourceSearch&&ResourceSearch->HasKeyboardFocus()&&!ResourceSearch->GetText().IsEmpty())
+    const bool ResultFocused=ResourceResultActions.ContainsByPredicate([](const auto& Handler){return Handler->Button&&Handler->Button->HasKeyboardFocus();});
+    if(Event.GetKey()==EKeys::Escape&&ResourceSearch&&(ResourceSearch->HasKeyboardFocus()||ResultFocused)&&!ResourceSearch->GetText().IsEmpty())
     {
         ClearResourceSearch();return FReply::Handled();
     }
