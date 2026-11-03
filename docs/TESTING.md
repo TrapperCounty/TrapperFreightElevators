@@ -1,5 +1,12 @@
 # Tester checklist
 
+## 0.1.16 search regression
+
+- In Routes and Ports, type a full query such as `wire` without re-clicking the field. The query and match count should update after every character; the popup should stay closed until clicked or opened with Down/Enter.
+- Backspace, select/replace the query, and enter mixed-case or unmatched text. Click the list or press Down, then choose a result with the mouse or keyboard/controller. Filtering alone must never change the selected resource.
+- Use Clear and Escape from the search field. Both the visible text and filter must reset, all items must return, and the previous selection must remain selected.
+- Repeat in Reservations and Fluid tanks, which share the same search implementation. Check white text on the dark field, including while focused, and the amber focus border.
+
 ## 0.1.15 candidate checks
 
 - Snap 1 m, 2 m and 4 m foundations and Powered Foundations to each side of a rotated tower, including manual shaft sections. Check top alignment at a landing, extend the shaft, then save/reload and repeat. Test straight 8 m walls between stops and confirm opening/control-panel heights are not offered as snaps.

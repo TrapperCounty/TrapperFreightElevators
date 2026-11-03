@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.1.16 - search input fix (unreleased candidate)
+
+- Fix issue #3: keep keyboard focus in the item/fluid search field while typing. Results and match counts update on every edit; click the list or press Down/Enter to open the filtered results, then select an item normally.
+- Give search text a dark background with explicit white text in both normal and focused states and an amber focus outline.
+- Make Clear and Escape reset both the visible query and the filtered list without losing the selected item.
+- Add a Slate keyboard regression covering continuous typing, backspace, clearing, selection preservation and explicit popup activation.
+
 ## 0.1.15 - dashboard and shaft snapping (unreleased candidate)
 
 - Snap flat foundations and straight 8 m walls to all four shaft faces on a 1 m height grid. Foundation tops align to landing heights; snapping leaves stop openings and the drive controls clear. Rotated towers and Powered Foundations use the same alignment.

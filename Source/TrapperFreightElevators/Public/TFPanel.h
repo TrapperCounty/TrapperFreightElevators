@@ -121,6 +121,7 @@ public:
     bool CapturedInput=false;
     virtual TSharedRef<SWidget> RebuildWidget() override;
     virtual void NativeTick(const FGeometry& Geometry,float Delta) override;
+    virtual FReply NativeOnPreviewKeyDown(const FGeometry& Geometry,const FKeyEvent& Event) override;
     virtual FReply NativeOnKeyDown(const FGeometry& Geometry,const FKeyEvent& Event) override;
     virtual void NativeDestruct() override;
     void Build();
@@ -132,6 +133,7 @@ public:
     UVerticalBox* Column(UHorizontalBox* Row,float Weight=1.f);
     void ResourcePicker(UVerticalBox* Parent,TSubclassOf<UFGItemDescriptor> Current=nullptr);
     void FilterResources();
+    void ClearResourceSearch();
     UFUNCTION() void ResourceSearchChanged(const FText& Value);
     UFUNCTION() void ResourceChanged(FString Value,ESelectInfo::Type SelectionType);
     UFUNCTION() UWidget* ResourceRow(FString Value);
